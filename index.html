@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Simo & Gena · Baby Store</title>
+<meta name="description" content="Tienda online de artículos para bebés. Ropa, blanquería, accesorios y juguetes sensoriales para recién nacidos hasta 2 años.">
+<link rel="icon" type="image/png" href="favicon.png">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<style>
+  /* ── ESTILOS EXCLUSIVOS DE INDEX ── */
+  .hero{min-height:100vh;display:flex;align-items:center;padding-top:80px;background:#FDFCF8;position:relative;overflow:hidden;}
+  .deco{position:absolute;pointer-events:none;z-index:0;}
+  .deco img{width:100%;height:100%;object-fit:contain;}
+  @keyframes floatSlow{0%,100%{transform:translateY(0);}50%{transform:translateY(-14px);}}
+  .float-anim{animation:floatSlow 5s ease-in-out infinite;}
+  .hero-inner{max-width:1200px;margin:0 auto;padding:60px 24px;display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;position:relative;z-index:1;}
+  .hero-tag{display:inline-flex;align-items:center;gap:8px;background:var(--mint);color:#4a9a7d;font-size:.76rem;font-weight:800;padding:6px 14px;border-radius:50px;margin-bottom:18px;letter-spacing:.5px;text-transform:uppercase;}
+  .hero h1{font-size:clamp(2rem,4.5vw,3.2rem);font-weight:900;line-height:1.15;color:#2d2d2d;margin-bottom:18px;}
+  .hero h1 .ct{color:var(--turquesa);}
+  .hero h1 .cn{color:var(--naranja);}
+  .hero-desc{font-size:1rem;color:#666;line-height:1.7;margin-bottom:32px;max-width:420px;}
+  .hero-ctas{display:flex;gap:14px;flex-wrap:wrap;}
+  .hero-visual{position:relative;display:flex;justify-content:center;align-items:flex-end;}
+  .hero-dinos{display:flex;align-items:flex-end;justify-content:center;position:relative;}
+  .hero-trixi{width:230px;height:auto;animation:floatSlow 5s ease-in-out infinite;position:relative;z-index:2;}
+  .hero-rex{width:180px;height:auto;animation:floatSlow 5s ease-in-out infinite .8s;margin-left:-35px;position:relative;z-index:1;}
+  .hero-badge{position:absolute;background:white;border-radius:16px;padding:9px 14px;box-shadow:0 4px 20px rgba(0,0,0,.08);font-weight:800;font-size:.76rem;display:flex;align-items:center;gap:7px;z-index:5;}
+  .hero-badge.one{top:0;right:-5px;color:var(--naranja);}
+  .hero-badge.two{bottom:20px;left:-10px;color:var(--lila);}
+  .stats-bar{background:white;border-top:2px solid var(--mint);border-bottom:2px solid var(--mint);}
+  .stats-inner{max-width:1200px;margin:0 auto;padding:22px 24px;display:flex;justify-content:center;gap:56px;flex-wrap:wrap;}
+  .stat-num{font-family:'Nunito',sans-serif;font-weight:900;font-size:1.8rem;color:var(--turquesa);line-height:1;}
+  .stat-label{font-size:.73rem;color:#888;font-weight:700;margin-top:3px;text-transform:uppercase;letter-spacing:.5px;}
+  .section{padding:76px 24px;}
+  .section-inner{max-width:1200px;margin:0 auto;}
+  .section-header{text-align:center;margin-bottom:48px;}
+  .section-tag{display:inline-block;font-size:.72rem;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--turquesa);margin-bottom:10px;}
+  .section-title{font-size:clamp(1.7rem,3.5vw,2.4rem);font-weight:900;color:#2d2d2d;line-height:1.2;}
+  .section-desc{margin-top:10px;font-size:.96rem;color:#777;max-width:500px;margin-left:auto;margin-right:auto;line-height:1.7;}
+  .preview-grid{display:grid;grid-template-columns:repeat(auto-fill,240px);gap:20px;margin-bottom:40px;justify-content:center;}
+  .preview-card{background:white;border-radius:20px;overflow:hidden;border:1.5px solid #f0efeb;transition:all .3s;display:flex;flex-direction:column;cursor:pointer;text-decoration:none;}
+  .preview-card:hover{transform:translateY(-6px);box-shadow:0 16px 40px rgba(0,0,0,.08);border-color:var(--mint);}
+  .pcard-img{width:100%;aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-size:3.2rem;position:relative;}
+  .pcard-body{padding:14px 16px 18px;flex:1;display:flex;flex-direction:column;}
+  .pcard-cat{font-size:.68rem;font-weight:800;letter-spacing:.5px;text-transform:uppercase;margin-bottom:4px;}
+  .ci{color:#7a74b5;} .cb{color:#4a9a7d;} .ca{color:#b8860a;} .cs{color:#c07030;}
+  .pcard-name{font-family:'Nunito',sans-serif;font-weight:800;font-size:.9rem;color:#2d2d2d;margin-bottom:4px;}
+  .pcard-desc{font-size:.78rem;color:#aaa;line-height:1.4;flex:1;}
+  .pcard-arrow{margin-top:12px;font-size:.78rem;font-weight:800;color:var(--turquesa);display:flex;align-items:center;gap:4px;}
+  .preview-cta{text-align:center;}
+  #contacto{background:linear-gradient(135deg,#f0faf5,#f5f3ff);}
+  .contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:52px;align-items:center;}
+  .contact-info h3{font-size:1.7rem;font-weight:900;color:#2d2d2d;margin-bottom:14px;line-height:1.3;}
+  .contact-info p{color:#777;line-height:1.7;margin-bottom:28px;}
+  .contact-links{display:flex;flex-direction:column;gap:12px;}
+  .contact-link{display:flex;align-items:center;gap:14px;padding:12px 16px;background:white;border-radius:14px;border:1.5px solid #f0f0f0;text-decoration:none;color:#2d2d2d;font-weight:700;font-size:.88rem;transition:all .2s;}
+  .contact-link:hover{border-color:var(--turquesa);transform:translateX(4px);}
+  .contact-link-icon img{width:36px;height:36px;object-fit:contain;}
+  .contact-form-wrap{background:white;border-radius:24px;padding:32px;border:1.5px solid #f0efeb;box-shadow:0 8px 40px rgba(0,0,0,.05);}
+  .contact-form-wrap h4{font-size:1.1rem;font-weight:900;color:#2d2d2d;margin-bottom:22px;}
+  .form-group{margin-bottom:16px;}
+  .form-group label{display:block;font-weight:800;font-size:.76rem;color:#555;margin-bottom:5px;text-transform:uppercase;letter-spacing:.5px;}
+  .form-group input,.form-group textarea{width:100%;padding:11px 14px;border:1.5px solid #e8e8e8;border-radius:12px;font-family:'Quicksand',sans-serif;font-size:.88rem;font-weight:600;color:#333;background:#FDFCF8;transition:border-color .2s;outline:none;}
+  .form-group input:focus,.form-group textarea:focus{border-color:var(--turquesa);background:white;}
+  .form-group textarea{resize:vertical;min-height:90px;}
+  .btn-form{width:100%;background:var(--turquesa);color:white;border:none;border-radius:50px;padding:13px;font-family:'Quicksand',sans-serif;font-weight:900;font-size:.92rem;cursor:pointer;transition:all .2s;box-shadow:0 4px 16px rgba(126,195,176,.3);}
+  .btn-form:hover{background:#6ab3a0;transform:translateY(-2px);}
+  @media(max-width:768px){
+    .hero-inner{grid-template-columns:1fr;text-align:center;gap:28px;padding:36px 20px 56px;}
+    .hero-ctas{justify-content:center;}
+    .hero-desc{margin:0 auto 26px;}
+    .hero-visual{order:-1;}
+    .hero-trixi{width:155px;}
+    .hero-rex{width:125px;}
+    .hero-badge.one{right:0;top:0;}
+    .hero-badge.two{left:0;bottom:5px;}
+    .stats-inner{gap:24px;}
+    .contact-grid{grid-template-columns:1fr;}
+    .preview-grid{grid-template-columns:repeat(2,1fr);gap:14px;}
+  }
+  @media(max-width:480px){
+    .section{padding:52px 16px;}
+    .hero-ctas{flex-direction:column;align-items:center;}
+    .btn-primary,.btn-secondary{width:100%;justify-content:center;}
+  }
+</style>
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="navbar-inner">
+    <div class="nav-logo">
+      <a href="index.html"><img src="logo.png" alt="Simo & Gena"></a>
+    </div>
+    <div class="nav-right">
+      <ul class="nav-links">
+        <li><a href="#inicio">Inicio</a></li>
+        <li><a href="catalogo.html">Catálogo</a></li>
+        <li><a href="#contacto">Contacto</a></li>
+      </ul>
+      <div class="nav-actions">
+        <button class="cart-icon-btn" onclick="toggleCart()" aria-label="Carrito">
+          <svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+          <span class="cart-badge" id="cartBadge">0</span>
+        </button>
+        <button class="hamburger" onclick="toggleMobile()" aria-label="Menú">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#inicio" onclick="closeMobile()">Inicio</a>
+    <a href="catalogo.html" onclick="closeMobile()">Catálogo</a>
+    <a href="#contacto" onclick="closeMobile()">Contacto</a>
+  </div>
+</nav>
+
+<section class="hero" id="inicio">
+  <div class="deco float-anim" style="top:12%;left:3%;width:66px;animation-delay:.5s;"><img src="Complementos__3_.png" alt=""></div>
+  <div class="deco float-anim" style="top:20%;left:9%;width:48px;animation-delay:1.2s;"><img src="Complementos__1_.png" alt=""></div>
+  <div class="deco float-anim" style="top:9%;right:5%;width:58px;animation-delay:.2s;"><img src="Complementos__4_.png" alt=""></div>
+  <div class="deco float-anim" style="bottom:18%;right:3%;width:54px;animation-delay:.9s;"><img src="Complementos__6_.png" alt=""></div>
+  <div class="deco float-anim" style="bottom:8%;left:5%;width:46px;animation-delay:1.5s;"><img src="Complementos__5_.png" alt=""></div>
+  <div class="deco float-anim" style="top:52%;left:1%;width:38px;animation-delay:.7s;"><img src="Complementos__7_.png" alt=""></div>
+  <div class="deco float-anim" style="top:32%;right:2%;width:50px;animation-delay:1.8s;"><img src="Complementos__8_.png" alt=""></div>
+  <div class="deco float-anim" style="bottom:30%;left:12%;width:44px;animation-delay:2.1s;"><img src="Complementos__2_.png" alt=""></div>
+  <div class="hero-inner">
+    <div class="hero-content">
+      <div class="hero-tag">✨ Tienda online para bebés</div>
+      <h1>Todo lo que tu <span class="ct">bebé</span> necesita con <span class="cn">amor</span></h1>
+      <p class="hero-desc">Ropa, blanquería y accesorios para recién nacidos hasta 2 años. Calidad premium, precios accesibles y entrega a domicilio.</p>
+      <div class="hero-ctas">
+        <a href="catalogo.html" class="btn-primary">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+          Ver catálogo
+        </a>
+        <a href="#contacto" class="btn-secondary">Consultanos</a>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="hero-dinos">
+        <img src="trixi.png" alt="Trixi la triceratops" class="hero-trixi">
+        <img src="rex.png" alt="Rex el dinosaurio" class="hero-rex">
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="stats-bar">
+  <div class="stats-inner">
+    <div class="stat-item fade-up"><div class="stat-num">+60</div><div class="stat-label">Productos</div></div>
+    <div class="stat-item fade-up"><div class="stat-num">4</div><div class="stat-label">Categorías</div></div>
+    <div class="stat-item fade-up"><div class="stat-num">100%</div><div class="stat-label">Calidad</div></div>
+    <div class="stat-item fade-up"><div class="stat-num">0–2</div><div class="stat-label">Años</div></div>
+  </div>
+</div>
+
+<section class="section" id="preview" style="background:#FDFCF8;">
+  <div class="section-inner">
+    <div class="section-header fade-up">
+      <div class="section-tag">✨ Lo que encontrás</div>
+      <h2 class="section-title">Nuestras categorías</h2>
+      <p class="section-desc">Explorá el catálogo completo con todos nuestros productos para tu bebé.</p>
+    </div>
+    <div class="preview-grid fade-up">
+      <a href="catalogo.html?cat=Indumentaria" class="preview-card">
+        <div class="pcard-img bg-I"><span>👕</span></div>
+        <div class="pcard-body">
+          <div class="pcard-cat ci">Indumentaria</div>
+          <div class="pcard-name">Bodies, ajuares y enteritos</div>
+          <div class="pcard-desc">Ropa suave y cómoda para los primeros años de vida.</div>
+          <div class="pcard-arrow">Ver productos →</div>
+        </div>
+      </a>
+      <a href="catalogo.html?cat=Blanqueria" class="preview-card">
+        <div class="pcard-img bg-B"><span>🛏️</span></div>
+        <div class="pcard-body">
+          <div class="pcard-cat cb">Blanquería</div>
+          <div class="pcard-name">Sábanas, acolchados y fundas</div>
+          <div class="pcard-desc">Para que tu bebé duerma abrazado con suavidad.</div>
+          <div class="pcard-arrow">Ver productos →</div>
+        </div>
+      </a>
+      <a href="catalogo.html?cat=Accesorios" class="preview-card">
+        <div class="pcard-img bg-A"><span>🍼</span></div>
+        <div class="pcard-body">
+          <div class="pcard-cat ca">Accesorios</div>
+          <div class="pcard-name">Baberos, babitas y porta chupete</div>
+          <div class="pcard-desc">Los pequeños detalles que hacen la diferencia.</div>
+          <div class="pcard-arrow">Ver productos →</div>
+        </div>
+      </a>
+      <a href="catalogo.html?cat=Sensorial" class="preview-card">
+        <div class="pcard-img bg-S"><span>🎵</span></div>
+        <div class="pcard-body">
+          <div class="pcard-cat cs">Sensorial</div>
+          <div class="pcard-name">Sonajeros y móviles</div>
+          <div class="pcard-desc">Estimulación temprana con colores y sonidos suaves.</div>
+          <div class="pcard-arrow">Ver productos →</div>
+        </div>
+      </a>
+    </div>
+    <div class="preview-cta fade-up">
+      <a href="catalogo.html" class="btn-primary" style="font-size:1.05rem;padding:16px 36px;">
+        Ver catálogo completo
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="contacto">
+  <div class="section-inner">
+    <div class="contact-grid">
+      <div class="contact-info fade-up">
+        <div class="section-tag">💬 Hablemos</div>
+        <h3>¿Tenés alguna consulta?<br>Estamos para ayudarte</h3>
+        <p>Escribinos por WhatsApp o completá el formulario. Pedidos, talles, disponibilidad… ¡lo que necesites!</p>
+        <div class="contact-links">
+          <a href="https://wa.me/5492213997535" class="contact-link" target="_blank">
+            <div class="contact-link-icon"><img src="wtsp.png" alt="WhatsApp"></div>
+            WhatsApp · +54 9 221 399 7535
+          </a>
+          <a href="https://instagram.com/simogenababystore" class="contact-link" target="_blank">
+            <div class="contact-link-icon"><img src="ig.png" alt="Instagram"></div>
+            Instagram · @simogenababystore
+          </a>
+        </div>
+      </div>
+      <div class="contact-form-wrap fade-up">
+        <h4>📩 Envianos un mensaje</h4>
+        <form action="https://formspree.io/f/YOUR_FORM_ID" method="POST" onsubmit="handleFormSubmit(event)">
+          <div class="form-group">
+            <label>Tu nombre</label>
+            <input type="text" name="nombre" placeholder="María García" required>
+          </div>
+          <div class="form-group">
+            <label>Teléfono / WhatsApp</label>
+            <input type="tel" name="telefono" placeholder="+54 9 221 000 0000">
+          </div>
+          <div class="form-group">
+            <label>Mensaje</label>
+            <textarea name="mensaje" placeholder="Hola! Quisiera consultar sobre..." required></textarea>
+          </div>
+          <button type="submit" class="btn-form">Enviar mensaje ✉️</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div>
+        <div class="footer-logo"><img src="logo_completo.png" alt="Simo & Gena Baby Store"></div>
+        <p class="footer-tagline">Artículos para bebés de 0 a 2 años. Calidad, amor y cuidado en cada producto.</p>
+      </div>
+      <div>
+        <div class="footer-links-title">Secciones</div>
+        <ul class="footer-links">
+          <li><a href="#inicio">Inicio</a></li>
+          <li><a href="catalogo.html">Catálogo</a></li>
+          <li><a href="#contacto">Contacto</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-links-title">Categorías</div>
+        <ul class="footer-links">
+          <li><a href="catalogo.html?cat=Indumentaria">Indumentaria</a></li>
+          <li><a href="catalogo.html?cat=Blanqueria">Blanquería</a></li>
+          <li><a href="catalogo.html?cat=Accesorios">Accesorios</a></li>
+          <li><a href="catalogo.html?cat=Sensorial">Sensorial</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-links-title">Seguinos</div>
+        <div class="social-links">
+          <a href="https://instagram.com/simogenababystore" class="social-link" target="_blank" title="Instagram"><img src="ig.png" alt="Instagram"></a>
+          <a href="https://wa.me/5492213997535" class="social-link" target="_blank" title="WhatsApp"><img src="wtsp.png" alt="WhatsApp"></a>
+          <a href="mailto:" class="social-link" title="Email"><img src="mail.png" alt="Mail"></a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p class="footer-copy">© 2025 Simo & Gena Baby Store. Todos los derechos reservados.</p>
+      <p class="footer-credit">Diseño y desarrollo por <a href="https://www.martinromero.com.ar" target="_blank">Martin Romero Studio</a></p>
+    </div>
+  </div>
+</footer>
+
+<div class="float-bar">
+  <a href="https://instagram.com/simogenababystore" class="float-btn" target="_blank">
+    <img src="ig.png" alt="Instagram">
+    <span class="float-label">Instagram</span>
+  </a>
+  <a href="https://wa.me/5492213997535" class="float-btn" target="_blank">
+    <img src="wtsp.png" alt="WhatsApp">
+    <span class="float-label">Escribinos</span>
+  </a>
+</div>
+
+<div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div>
+<div class="cart-drawer" id="cartDrawer">
+  <div class="cart-header">
+    <div class="cart-title">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#7EC3B0" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+      Tu pedido
+    </div>
+    <button class="close-btn" onclick="toggleCart()">✕</button>
+  </div>
+  <div class="cart-items" id="cartItems">
+    <div class="cart-empty">
+      <div class="cart-empty-emoji">🛒</div>
+      <p>Tu carrito está vacío</p>
+      <p style="font-size:.76rem;color:#bbb;margin-top:5px;">Visitá el catálogo y agregá productos</p>
+    </div>
+  </div>
+  <div class="cart-footer">
+    <div class="cart-total">
+      <span class="cart-total-label">Total estimado:</span>
+      <span class="cart-total-price" id="cartTotal">$0</span>
+    </div>
+    <button class="btn-whatsapp" onclick="sendToWhatsApp()">
+      <img src="wtsp.png" alt="">
+      Enviar pedido por WhatsApp
+    </button>
+  </div>
+</div>
+
+<script>
+const WA = '5492213997535';
+const bgMap = {Indumentaria:'bg-I',Blanqueria:'bg-B',Accesorios:'bg-A',Sensorial:'bg-S'};
+let cart = JSON.parse(localStorage.getItem('sg_cart')||'[]');
+function saveCart(){localStorage.setItem('sg_cart',JSON.stringify(cart));}
+function updateCartUI(){
+  const total=cart.reduce((s,i)=>s+i.precio*i.qty,0);
+  const count=cart.reduce((s,i)=>s+i.qty,0);
+  document.getElementById('cartTotal').textContent='$'+total.toLocaleString('es-AR');
+  const badge=document.getElementById('cartBadge');
+  badge.textContent=count;badge.style.display=count>0?'flex':'none';
+  const c=document.getElementById('cartItems');if(!c)return;
+  if(!cart.length){c.innerHTML='<div class="cart-empty"><div class="cart-empty-emoji">🛒</div><p>Tu carrito está vacío</p><p style="font-size:.76rem;color:#bbb;margin-top:5px;">Visitá el catálogo y agregá productos</p></div>';return;}
+  c.innerHTML=cart.map(i=>`<div class="cart-item"><div class="cart-item-emoji ${bgMap[i.categoria]||''}">${i.emoji||'📦'}</div><div class="cart-item-info"><div class="cart-item-name">${i.nombre}</div><div class="cart-item-price">$${(i.precio*i.qty).toLocaleString('es-AR')}</div></div><div class="cart-qty"><button class="qty-btn" onclick="changeQty('${i.id}',-1)">−</button><span class="qty-num">${i.qty}</span><button class="qty-btn" onclick="changeQty('${i.id}',1)">+</button></div></div>`).join('');
+}
+function changeQty(id,d){
+  const item=cart.find(i=>i.id===id);if(!item)return;
+  item.qty+=d;if(item.qty<=0)cart=cart.filter(i=>i.id!==id);
+  saveCart();updateCartUI();
+}
+function sendToWhatsApp(){
+  if(!cart.length)return;
+  const items=cart.map(i=>`• ${i.nombre} x${i.qty} — $${(i.precio*i.qty).toLocaleString('es-AR')}`).join('\n');
+  const total=cart.reduce((s,i)=>s+i.precio*i.qty,0);
+  const msg=`¡Hola Simo & Gena! 🦕 Quisiera hacer el siguiente pedido:\n\n${items}\n\n*Total estimado: $${total.toLocaleString('es-AR')}*\n\n¿Está disponible?`;
+  window.open(`https://wa.me/${WA}?text=${encodeURIComponent(msg)}`,'_blank');
+}
+function toggleCart(){
+  const o=document.getElementById('cartOverlay'),d=document.getElementById('cartDrawer');
+  const open=d.classList.contains('open');
+  o.classList.toggle('open',!open);d.classList.toggle('open',!open);
+  document.body.style.overflow=!open?'hidden':'';
+}
+function toggleMobile(){document.getElementById('mobileMenu').classList.toggle('open');}
+function closeMobile(){document.getElementById('mobileMenu').classList.remove('open');}
+function handleFormSubmit(e){
+  if(e.target.action.includes('YOUR_FORM_ID')){
+    e.preventDefault();
+    const n=e.target.nombre?.value||'',m=e.target.mensaje?.value||'',t=e.target.telefono?.value||'';
+    window.open(`https://wa.me/${WA}?text=${encodeURIComponent(`Hola! Soy ${n}${t?' ('+t+')':''}.\n\n${m}`)}`,'_blank');
+  }
+}
+function observeFadeUps(){
+  const obs=new IntersectionObserver(entries=>{
+    entries.forEach((e,i)=>{if(e.isIntersecting){setTimeout(()=>e.target.classList.add('visible'),i*80);obs.unobserve(e.target);}});
+  },{threshold:.1});
+  document.querySelectorAll('.fade-up:not(.visible)').forEach(el=>obs.observe(el));
+}
+updateCartUI();
+observeFadeUps();
+</script>
+</body>
+</html>
