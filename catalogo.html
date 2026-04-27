@@ -153,6 +153,23 @@
 }
 .variant-chip:hover{border-color:var(--lila);color:var(--lila);}
 .variant-chip.active{border-color:var(--lila);background:var(--lila);color:white;}
+/* Sin stock: gris, tachado, no clickeable */
+.variant-chip.sin-stock{
+  border-color:#e0e0e0;background:#fafafa;color:#bbb;
+  cursor:not-allowed;
+  text-decoration:line-through;
+  opacity:.65;
+  position:relative;
+}
+.variant-chip.sin-stock:hover{border-color:#e0e0e0;color:#bbb;}
+.sin-stock-tag{
+  display:inline-block;
+  font-size:.62rem;font-weight:800;
+  background:#e8e8e8;color:#aaa;
+  border-radius:50px;padding:1px 6px;
+  margin-left:4px;vertical-align:middle;
+  text-decoration:none;          /* que el tag no tenga tachado */
+}
 
 /* Botón agregar al carrito */
 .vm-confirm-btn{
@@ -349,12 +366,12 @@ const badgeMap={Indumentaria:'badge-I',Blanqueria:'badge-B',Accesorios:'badge-A'
 
 /* ── FALLBACK — 011 tiene variantes de ejemplo ── */
 const FALLBACK=[
-  {id:'001',nombre:'Body manga corta',categoria:'Indumentaria',precio:4500,descripcion:'100% algodón, talle 0-3m',emoji:'👕',disponible:true,imagen_url:'',todas_imagenes:[],variantes:[],tiene_variantes:false},
-  {id:'002',nombre:'Ajuar recién nacido',categoria:'Indumentaria',precio:8900,descripcion:'Set completo body + ranita + gorra',emoji:'🎀',disponible:true,imagen_url:'',todas_imagenes:[],variantes:[],tiene_variantes:false},
-  {id:'003',nombre:'Enterito dinosaurio',categoria:'Indumentaria',precio:6200,descripcion:'Polar suave, talle 3-6m',emoji:'🦕',disponible:true,imagen_url:'',todas_imagenes:[],variantes:[],tiene_variantes:false},
-  {id:'007',nombre:'Sábana cuna estampada',categoria:'Blanqueria',precio:7800,descripcion:'Set x2, algodón premium',emoji:'🛏️',disponible:true,imagen_url:'',todas_imagenes:[],variantes:[],tiene_variantes:false},
-  {id:'011',nombre:'Babero algodón',categoria:'Accesorios',precio:2800,descripcion:'Con broche a presión — elegí el modelo',descripcion_larga:'Babero de algodón 100% premium con broche a presión de acero inoxidable. Suave para la piel del bebé, lavable a máquina. Disponible en varios modelos — elegí el que más te guste.',emoji:'🍼',disponible:true,imagen_url:'',todas_imagenes:[],variantes:['Rojo','Verde','Azul','Amarillo'],tiene_variantes:true},
-  {id:'015',nombre:'Sonajero dino',categoria:'Sensorial',precio:3200,descripcion:'Sin BPA, colores pasteles',emoji:'🎵',disponible:true,imagen_url:'',todas_imagenes:[],variantes:[],tiene_variantes:false},
+  {id:'001',nombre:'Body manga corta',categoria:'Indumentaria',precio:4500,descripcion:'100% algodón, talle 0-3m',descripcion_larga:'',emoji:'👕',disponible:true,imagen_url:'',todas_imagenes:[],variantes:[],tiene_variantes:false,sin_stock:new Set()},
+  {id:'002',nombre:'Ajuar recién nacido',categoria:'Indumentaria',precio:8900,descripcion:'Set completo body + ranita + gorra',descripcion_larga:'',emoji:'🎀',disponible:true,imagen_url:'',todas_imagenes:[],variantes:[],tiene_variantes:false,sin_stock:new Set()},
+  {id:'003',nombre:'Enterito dinosaurio',categoria:'Indumentaria',precio:6200,descripcion:'Polar suave, talle 3-6m',descripcion_larga:'',emoji:'🦕',disponible:true,imagen_url:'',todas_imagenes:[],variantes:[],tiene_variantes:false,sin_stock:new Set()},
+  {id:'007',nombre:'Sábana cuna estampada',categoria:'Blanqueria',precio:7800,descripcion:'Set x2, algodón premium',descripcion_larga:'',emoji:'🛏️',disponible:true,imagen_url:'',todas_imagenes:[],variantes:[],tiene_variantes:false,sin_stock:new Set()},
+  {id:'011',nombre:'Babero algodón',categoria:'Accesorios',precio:2800,descripcion:'Con broche a presión — elegí el modelo',descripcion_larga:'Babero de algodón 100% premium con broche a presión de acero inoxidable. Suave para la piel del bebé, lavable a máquina. Disponible en varios modelos — elegí el que más te guste.',emoji:'🍼',disponible:true,imagen_url:'',todas_imagenes:[],variantes:['Rojo','Verde','Azul','Amarillo'],tiene_variantes:true,sin_stock:new Set(['azul'])},
+  {id:'015',nombre:'Sonajero dino',categoria:'Sensorial',precio:3200,descripcion:'Sin BPA, colores pasteles',descripcion_larga:'',emoji:'🎵',disponible:true,imagen_url:'',todas_imagenes:[],variantes:[],tiene_variantes:false,sin_stock:new Set()},
 ];
 
 const SHEET_URL='https://docs.google.com/spreadsheets/d/e/2PACX-1vRCS92M63zJbW_4P9ZZ1eZhN_DUuXvM9FML4r8EknqR-vhJizGctrJncKmu5L55QvFALZCMleFGY6OL/pub?gid=0&single=true&output=csv';
@@ -402,6 +419,12 @@ async function loadFromSheets(){
       const rawMod=c[idx('modelos')]||'';
       const variantesArr=rawMod?rawMod.split(',').map(v=>v.trim()).filter(v=>v):[];
 
+      // Modelos sin stock: columna "modelos_sin_stock" — nombres exactos separados por coma
+      const rawSinStock=c[idx('modelos_sin_stock')]||'';
+      const sinStockSet=new Set(
+        rawSinStock?rawSinStock.split(',').map(v=>v.trim().toLowerCase()).filter(v=>v):[]
+      );
+
       return{
         id:c[idx('id')]||'',
         nombre:c[idx('nombre')]||'',
@@ -416,6 +439,7 @@ async function loadFromSheets(){
         disponible:(c[idx('disponible')]||'').toUpperCase()==='TRUE',
         variantes:variantesArr,
         tiene_variantes:variantesArr.length>1,
+        sin_stock:sinStockSet,   // Set con nombres en minúscula de modelos agotados
       };
     }).filter(p=>p.disponible&&p.nombre);
 
@@ -485,7 +509,9 @@ function openVariantsModal(id){
   const p=productos.find(x=>x.id===id);
   if(!p)return;
   vmCurrentProduct=p;
-  vmCurrentIndex=0;
+  // Arrancar en el primer modelo que tenga stock
+  vmCurrentIndex=p.variantes.findIndex(v=>!p.sin_stock.has(v.toLowerCase()));
+  if(vmCurrentIndex===-1)vmCurrentIndex=0; // todos sin stock — igual mostramos el primero
 
   const tieneImgs=p.todas_imagenes&&p.todas_imagenes.length>0;
   const multiImg=tieneImgs&&p.todas_imagenes.length>1;
@@ -509,10 +535,21 @@ function openVariantsModal(id){
     imgPanelHTML=`<div class="vm-emoji-fallback">${p.emoji||'📦'}</div>`;
   }
 
-  /* Chips de variante */
-  const chips=p.variantes.map((v,i)=>
-    `<button class="variant-chip${i===0?' active':''}" data-idx="${i}" onclick="vmSelectVariant(${i},this)">${v}</button>`
-  ).join('');
+  /* Chips de variante — marcando los sin stock */
+  const chips=p.variantes.map((v,i)=>{
+    const agotado=p.sin_stock.has(v.toLowerCase());
+    if(agotado){
+      // Sin stock: no clickeable, tachado, tag "Sin stock"
+      return`<button class="variant-chip sin-stock" disabled>
+        ${v}<span class="sin-stock-tag">Sin stock</span>
+      </button>`;
+    }
+    const isActive=i===vmCurrentIndex;
+    return`<button class="variant-chip${isActive?' active':''}" data-idx="${i}" onclick="vmSelectVariant(${i},this)">${v}</button>`;
+  }).join('');
+
+  /* ¿Todos los modelos están sin stock? */
+  const todosSinStock=p.variantes.every(v=>p.sin_stock.has(v.toLowerCase()));
 
   document.getElementById('vmModal').innerHTML=`
     <div class="vm-img-panel">${imgPanelHTML}</div>
@@ -527,14 +564,19 @@ function openVariantsModal(id){
         </div>
         ${(p.descripcion_larga||p.descripcion)?`<p class="vm-desc">${p.descripcion_larga||p.descripcion}</p>`:''}
         <div class="vm-divider"></div>
-        <div class="vm-label">Modelo: <span class="vm-selected-name" id="vmSelectedName">${p.variantes[0]||''}</span></div>
+        <div class="vm-label">Modelo: <span class="vm-selected-name" id="vmSelectedName">${p.variantes[vmCurrentIndex]||''}</span></div>
         <div class="vm-variants">${chips}</div>
       </div>
       <div class="vm-info-footer">
-        <button class="vm-confirm-btn" onclick="addVariantToCart()">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-          Agregar al carrito
-        </button>
+        ${todosSinStock?
+          `<button class="vm-confirm-btn" disabled style="background:#ccc;box-shadow:none;cursor:not-allowed;">
+            Sin stock disponible por el momento
+          </button>`
+         :`<button class="vm-confirm-btn" id="vmConfirmBtn" onclick="addVariantToCart()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Agregar al carrito
+          </button>`
+        }
       </div>
     </div>
   `;
@@ -598,6 +640,8 @@ function addVariantToCart(){
   if(!vmCurrentProduct)return;
   const p=vmCurrentProduct;
   const modelo=p.variantes[vmCurrentIndex]||'';
+  // Guardia: no agregar si el modelo está sin stock
+  if(p.sin_stock.has(modelo.toLowerCase()))return;
   const cartId=`${p.id}__${modelo.toLowerCase().replace(/\s+/g,'_')}`;
   const nombreConModelo=modelo?`${p.nombre} — ${modelo}`:p.nombre;
   const ex=cart.find(i=>i.id===cartId);
