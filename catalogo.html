@@ -24,7 +24,7 @@
 .filter-tab:hover{border-color:var(--turquesa);color:var(--turquesa);}
 .filter-tab.active{background:var(--turquesa);border-color:var(--turquesa);color:white;}
 .products-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:22px;}
-.product-card{background:white;border-radius:20px;overflow:hidden;border:1.5px solid #f0efeb;transition:all .3s;display:flex;flex-direction:column;}
+.product-card{background:white;border-radius:20px;overflow:hidden;border:1.5px solid #f0efeb;transition:all .3s;display:flex;flex-direction:column;cursor:pointer;}
 .product-card:hover{transform:translateY(-5px);box-shadow:0 14px 36px rgba(0,0,0,.08);border-color:var(--mint);}
 .product-img-wrap{width:100%;aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-size:3.8rem;position:relative;flex-shrink:0;}
 .cat-badge{position:absolute;top:10px;left:10px;font-size:.64rem;font-weight:800;padding:4px 9px;border-radius:50px;letter-spacing:.4px;text-transform:uppercase;}
@@ -469,19 +469,22 @@ function renderProducts(cat){
 
     let btnHTML;
     if(p.tiene_variantes){
-      btnHTML=`<button class="add-btn variants-btn" id="btn-${p.id}" onclick="openVariantsModal('${p.id}')">
+      btnHTML=`<button class="add-btn variants-btn" id="btn-${p.id}" onclick="event.stopPropagation();openVariantsModal('${p.id}')">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
         Ver modelos
       </button>`;
     }else{
-      btnHTML=`<button class="add-btn ${inc?'added':''}" id="btn-${p.id}" onclick="addToCart('${p.id}')">
+      btnHTML=`<button class="add-btn ${inc?'added':''}" id="btn-${p.id}" onclick="event.stopPropagation();addToCart('${p.id}')">
         ${inc
           ?'<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg> En carrito'
           :'<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> Agregar'}
       </button>`;
     }
 
-    return`<div class="product-card fade-up">
+    // Click en cualquier parte de la card abre el modal correspondiente
+    const cardClick=`openProductModal('${p.id}')`;
+
+    return`<div class="product-card fade-up" onclick="${cardClick}">
       <div class="product-img-wrap ${bgMap[p.categoria]||''}" style="position:relative;">
         ${imgTag}
         <span class="cat-badge ${badgeMap[p.categoria]||''}" style="position:absolute;z-index:2;">${p.categoria}</span>
@@ -499,6 +502,91 @@ function renderProducts(cat){
     </div>`;
   }).join('');
   observeFadeUps();
+}
+
+/* ── ROUTER: click en card → modal correcto ── */
+function openProductModal(id){
+  const p=productos.find(x=>x.id===id);
+  if(!p)return;
+  if(p.tiene_variantes){
+    openVariantsModal(id);
+  }else{
+    openInfoModal(id);
+  }
+}
+
+/* ── MODAL INFO (productos sin variantes) ── */
+function openInfoModal(id){
+  const p=productos.find(x=>x.id===id);
+  if(!p)return;
+
+  const tieneImgs=p.todas_imagenes&&p.todas_imagenes.length>0;
+
+  /* Panel izquierdo: imagen o emoji */
+  const imgPanelHTML=tieneImgs
+    ?`<div class="vm-carousel">
+        <img src="${p.todas_imagenes[0]}" alt="${p.nombre}" class="active" onerror="this.style.display='none'">
+      </div>`
+    :`<div class="vm-emoji-fallback">${p.emoji||'📦'}</div>`;
+
+  /* Estado del botón según si ya está en el carrito */
+  const inCart=cart.find(i=>i.id===p.id);
+  const btnAgregar=inCart
+    ?`<button class="vm-confirm-btn" style="background:var(--verde);" onclick="addToCartFromModal('${p.id}')">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+        En carrito (${inCart.qty}) — agregar otro
+      </button>`
+    :`<button class="vm-confirm-btn" onclick="addToCartFromModal('${p.id}')">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        Agregar al carrito
+      </button>`;
+
+  document.getElementById('vmModal').innerHTML=`
+    <div class="vm-img-panel">${imgPanelHTML}</div>
+    <div class="vm-info-panel">
+      <div class="vm-info-scroll">
+        <div class="vm-header">
+          <div class="vm-header-left">
+            <div class="vm-title">${p.nombre}</div>
+            <div class="vm-price">$${p.precio.toLocaleString('es-AR')}</div>
+          </div>
+          <button class="vm-close" onclick="closeVariantsModal()">✕</button>
+        </div>
+        ${(p.descripcion_larga||p.descripcion)?`<p class="vm-desc">${p.descripcion_larga||p.descripcion}</p>`:''}
+        <div class="vm-divider"></div>
+        <div class="vm-label" style="color:var(--turquesa);">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+          Unidad disponible
+        </div>
+      </div>
+      <div class="vm-info-footer" id="vmInfoFooter">
+        ${btnAgregar}
+      </div>
+    </div>
+  `;
+
+  document.getElementById('vmOverlay').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+
+/* Agregar al carrito desde el modal info y actualizar el botón sin cerrar */
+function addToCartFromModal(id){
+  const p=productos.find(p=>p.id===id);if(!p)return;
+  const ex=cart.find(i=>i.id===id);
+  ex?ex.qty++:cart.push({...p,qty:1});
+  saveCart();updateCartUI();
+  // Actualizar botón del modal en vivo
+  const footer=document.getElementById('vmInfoFooter');
+  if(footer){
+    const inCart=cart.find(i=>i.id===id);
+    footer.innerHTML=`<button class="vm-confirm-btn" style="background:var(--verde);" onclick="addToCartFromModal('${id}')">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+      En carrito (${inCart.qty}) — agregar otro
+    </button>`;
+  }
+  // Actualizar también el botón de la card en el grid
+  const btn=document.getElementById('btn-'+id);
+  if(btn){btn.classList.add('added');btn.innerHTML='<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg> En carrito';}
 }
 
 /* ── MODAL DE VARIANTES ── */
@@ -610,6 +698,23 @@ function vmSelectVariant(idx,chipEl){
   chipEl.classList.add('active');
   document.getElementById('vmSelectedName').textContent=vmCurrentProduct.variantes[idx]||'';
   vmSyncCarousel();
+  vmUpdateConfirmBtn(); // refleja si este modelo ya está en carrito
+}
+
+/* Actualiza el botón confirmar según el estado del modelo actualmente seleccionado */
+function vmUpdateConfirmBtn(){
+  const btn=document.getElementById('vmConfirmBtn');
+  if(!btn||!vmCurrentProduct)return;
+  const modelo=vmCurrentProduct.variantes[vmCurrentIndex]||'';
+  const cartId=`${vmCurrentProduct.id}__${modelo.toLowerCase().replace(/\s+/g,'_')}`;
+  const inCart=cart.find(i=>i.id===cartId);
+  if(inCart){
+    btn.style.background='var(--verde)';
+    btn.innerHTML=`<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg> En carrito (${inCart.qty}) — agregar otro`;
+  }else{
+    btn.style.background='';
+    btn.innerHTML=`<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> Agregar al carrito`;
+  }
 }
 function vmSyncCarousel(){
   const carousel=document.getElementById('vmCarousel');
@@ -640,7 +745,6 @@ function addVariantToCart(){
   if(!vmCurrentProduct)return;
   const p=vmCurrentProduct;
   const modelo=p.variantes[vmCurrentIndex]||'';
-  // Guardia: no agregar si el modelo está sin stock
   if(p.sin_stock.has(modelo.toLowerCase()))return;
   const cartId=`${p.id}__${modelo.toLowerCase().replace(/\s+/g,'_')}`;
   const nombreConModelo=modelo?`${p.nombre} — ${modelo}`:p.nombre;
@@ -656,8 +760,8 @@ function addVariantToCart(){
     qty:1,
   });}
   saveCart();updateCartUI();
-  closeVariantsModal();
-  setTimeout(()=>openCart(),280);
+  // No cierra — actualiza el botón con el contador del modelo actual
+  vmUpdateConfirmBtn();
 }
 
 /* ── CARRITO ── */
@@ -670,9 +774,12 @@ function addToCart(id){
   const ex=cart.find(i=>i.id===id);
   ex?ex.qty++:cart.push({...p,qty:1});
   saveCart();updateCartUI();
+  const inCart=cart.find(i=>i.id===id);
   const btn=document.getElementById('btn-'+id);
-  if(btn){btn.classList.add('added');btn.innerHTML='<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg> En carrito';}
-  setTimeout(()=>openCart(),300);
+  if(btn){
+    btn.classList.add('added');
+    btn.innerHTML=`<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg> En carrito (${inCart.qty}) — agregar otro`;
+  }
 }
 function changeQty(id,d){
   const item=cart.find(i=>i.id===id);if(!item)return;
@@ -686,6 +793,8 @@ function changeQty(id,d){
     }
   }
   saveCart();updateCartUI();
+  // Si el modal de variantes está abierto, refrescar su botón
+  if(vmCurrentProduct)vmUpdateConfirmBtn();
 }
 function updateCartUI(){
   const total=cart.reduce((s,i)=>s+i.precio*i.qty,0);
