@@ -857,7 +857,8 @@ async function initFromURL(){
   productos=await loadFromSheets();
   const cat=new URLSearchParams(window.location.search).get('cat');
   if(cat){
-    const btn=[...document.querySelectorAll('.filter-tab')].find(b=>b.textContent.includes(cat));
+    const normalize=s=>s.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
+    const btn=[...document.querySelectorAll('.filter-tab')].find(b=>normalize(b.textContent).includes(normalize(cat)));
     if(btn){filterCat(cat,btn);return;}
   }
   renderProducts('todos');
