@@ -26,17 +26,16 @@ h1, h2, h3, h4 { font-family: 'Nunito', sans-serif; }
   transition: all .3s;
 }
 .navbar-inner {
-  max-width: 1500px; height: 80px;
+  max-width: 1500px; height: 85px;
   margin: 0 auto; padding: 0 24px;
   display: flex; align-items: center; justify-content: space-between; gap: 40px;
 }
 .nav-right { display: flex; align-items: center; gap: 24px; }
 
 /* Logo — contenido dentro del navbar */
-.nav-logo a { display: flex; align-items: center; height: 60px; }
 .nav-logo img {
   height: 100%;
-  max-height: 60px;
+  max-height: 500px;
   width: auto;
   display: block;
 }
@@ -181,5 +180,5 @@ footer { background: #781000; color: #aaa; padding: 44px 24px 24px; }
   .float-btn .float-label { display: none; }
   .float-btn { padding: 8px; border-radius: 50%; width: 52px; height: 52px; justify-content: center; }
   .nav-logo a { height: 56px; }
-  .nav-logo img { max-height: 56px; }
+  .nav-logo img { max-height: 250px; }
 }
