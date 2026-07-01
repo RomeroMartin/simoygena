@@ -10,8 +10,8 @@
 .page-header h1{font-size:clamp(1.8rem,4vw,2.8rem);font-weight:900;color:#2d2d2d;margin-bottom:8px;}
 .page-header p{color:#666;font-size:.96rem;max-width:440px;line-height:1.6;}
 .header-dinos{display:flex;align-items:flex-end;flex-shrink:0;padding-bottom:4px;}
-.header-trixi{width:90px;opacity:.9;}
-.header-rex{width:110px;opacity:.85;margin-left:-18px;}
+.header-trixi{width:90px;height:auto;opacity:.9;}
+.header-rex{width:110px;height:auto;opacity:.85;margin-left:-18px;}
 .catalog-main{max-width:1200px;margin:0 auto;padding:40px 24px 80px;}
 
 /* Buscador */
