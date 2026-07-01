@@ -1,241 +1,46 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es-AR">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Catálogo · Simo & Gena Baby Store</title>
+<meta name="description" content="Catálogo completo de Simo & Gena: ropa, blanquería, accesorios y juguetes sensoriales para bebés de 0 a 2 años. Elegí tus productos y hacé el pedido por WhatsApp.">
+<link rel="canonical" href="https://simoygena.com.ar/catalogo.html">
+<meta name="theme-color" content="#7EC3B0">
+<meta name="robots" content="index, follow">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Simo & Gena Baby Store">
+<meta property="og:locale" content="es_AR">
+<meta property="og:url" content="https://simoygena.com.ar/catalogo.html">
+<meta property="og:title" content="Catálogo · Simo & Gena Baby Store">
+<meta property="og:description" content="Ropa, blanquería, accesorios y sensorial para bebés de 0 a 2 años. Pedidos por WhatsApp.">
+<meta property="og:image" content="https://simoygena.com.ar/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Catálogo · Simo & Gena Baby Store">
+<meta name="twitter:description" content="Ropa, blanquería, accesorios y sensorial para bebés de 0 a 2 años.">
+<meta name="twitter:image" content="https://simoygena.com.ar/og-image.png">
+
 <link rel="icon" type="image/png" href="favicon.png">
-<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="apple-touch-icon" href="favicon.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
-<style>
-/* ── CATÁLOGO ── */
-.page-header{background:linear-gradient(135deg,#f0faf5,#f5f3ff);padding:100px 24px 52px;position:relative;overflow:hidden;}
-.page-header::after{content:'';position:absolute;bottom:-2px;left:0;right:0;height:40px;background:#FDFCF8;clip-path:ellipse(55% 100% at 50% 100%);}
-.page-header-inner{max-width:1200px;margin:0 auto;position:relative;z-index:1;display:flex;align-items:center;justify-content:space-between;gap:24px;}
-.page-header-text{flex:1;}
-.page-header h1{font-size:clamp(1.8rem,4vw,2.8rem);font-weight:900;color:#2d2d2d;margin-bottom:8px;}
-.page-header p{color:#777;font-size:.96rem;max-width:440px;line-height:1.6;}
-.header-dinos{display:flex;align-items:flex-end;flex-shrink:0;padding-bottom:4px;}
-.header-trixi{width:90px;opacity:.9;}
-.header-rex{width:110px;opacity:.85;margin-left:-18px;}
-.catalog-main{max-width:1200px;margin:0 auto;padding:40px 24px 80px;}
-.filter-tabs{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:36px;}
-.filter-tab{padding:9px 20px;border-radius:50px;border:2px solid #e0e0e0;background:white;font-family:'Quicksand',sans-serif;font-weight:800;font-size:.82rem;cursor:pointer;color:#666;transition:all .2s;display:inline-flex;align-items:center;gap:6px;}
-.filter-tab-icon{width:22px;height:22px;object-fit:cover;border-radius:50%;flex-shrink:0;}
-.filter-tab:hover{border-color:var(--turquesa);color:var(--turquesa);}
-.filter-tab.active{background:var(--turquesa);border-color:var(--turquesa);color:white;}
-.products-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:22px;}
-.product-card{background:white;border-radius:20px;overflow:hidden;border:1.5px solid #f0efeb;transition:all .3s;display:flex;flex-direction:column;cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent;}
-.product-card:hover{transform:translateY(-5px);box-shadow:0 14px 36px rgba(0,0,0,.08);border-color:var(--mint);}
-.product-img-wrap{width:100%;aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-size:3.8rem;position:relative;flex-shrink:0;}
-.cat-badge{position:absolute;top:10px;left:10px;font-size:.64rem;font-weight:800;padding:4px 9px;border-radius:50px;letter-spacing:.4px;text-transform:uppercase;}
-.badge-I{background:rgba(158,154,191,.2);color:#7a74b5;}
-.badge-B{background:rgba(197,228,213,.4);color:#4a9a7d;}
-.badge-A{background:rgba(238,197,117,.3);color:#b8860a;}
-.badge-S{background:rgba(236,155,92,.2);color:#c07030;}
-.product-info{padding:14px 16px 16px;display:flex;flex-direction:column;flex:1;}
-.product-name{font-family:'Nunito',sans-serif;font-weight:800;font-size:.9rem;color:#2d2d2d;margin-bottom:4px;line-height:1.3;}
-.product-desc{font-size:.76rem;color:#999;line-height:1.45;margin-bottom:12px;flex:1;}
-.product-footer{display:flex;flex-direction:column;gap:10px;}
-.product-price{font-family:'Nunito',sans-serif;font-weight:900;font-size:1.12rem;color:var(--turquesa);}
-.add-btn{width:100%;background:var(--turquesa);color:white;border:none;border-radius:50px;padding:10px 16px;font-family:'Quicksand',sans-serif;font-weight:800;font-size:.82rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;transition:all .2s;touch-action:manipulation;-webkit-tap-highlight-color:transparent;}
-.add-btn:hover{background:#6ab3a0;}
-.add-btn.added{background:var(--verde);}
-.add-btn.variants-btn{background:var(--lila);}
-.add-btn.variants-btn:hover{background:#8a86ae;}
-.variants-badge{position:absolute;top:10px;right:10px;background:var(--lila);color:white;font-size:.58rem;font-weight:800;padding:3px 8px;border-radius:50px;letter-spacing:.3px;z-index:2;}
-
-/* ──────────────────────────────────────────────
-   MODAL VARIANTES — layout split, sin scroll externo
-   Imagen fija a la izquierda, info a la derecha
-────────────────────────────────────────────── */
-.vm-overlay{
-  position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:300;
-  opacity:0;pointer-events:none;transition:opacity .28s;
-  display:flex;align-items:center;justify-content:center;
-  padding:20px;
-}
-.vm-overlay.open{opacity:1;pointer-events:all;}
-
-/* Modal: ancho máx 820px, alto fijo al viewport, dos columnas */
-.vm-modal{
-  background:white;border-radius:24px;
-  width:min(820px,100%);
-  height:min(520px,88vh);
-  display:flex;flex-direction:row;
-  overflow:hidden;                /* cada panel gestiona su propio scroll */
-  transform:translateY(22px) scale(.97);
-  transition:transform .32s cubic-bezier(.34,1.56,.64,1);
-  box-shadow:0 24px 64px rgba(0,0,0,.22);
-}
-.vm-overlay.open .vm-modal{transform:translateY(0) scale(1);}
-
-/* ── Panel izquierdo: imagen fija, 50% ── */
-.vm-img-panel{
-  position:relative;
-  flex:0 0 50%;
-  background:#f4f3f0;
-  overflow:hidden;
-}
-.vm-carousel{position:relative;width:100%;height:100%;}
-.vm-carousel img{
-  width:100%;height:100%;object-fit:cover;
-  position:absolute;inset:0;transition:opacity .26s;
-}
-@media(max-width:600px){
-  .vm-carousel img{object-fit:contain;}
-}
-.vm-carousel img.hidden{opacity:0;pointer-events:none;}
-.vm-carousel img.active{opacity:1;}
-.vm-emoji-fallback{
-  width:100%;height:100%;
-  display:flex;align-items:center;justify-content:center;font-size:5.5rem;
-}
-/* Flechas */
-.vm-arrow{
-  position:absolute;top:50%;transform:translateY(-50%);
-  background:rgba(255,255,255,.9);border:none;border-radius:50%;
-  width:34px;height:34px;cursor:pointer;
-  display:flex;align-items:center;justify-content:center;
-  font-size:1.2rem;color:#444;
-  box-shadow:0 2px 10px rgba(0,0,0,.14);z-index:3;transition:all .18s;
-}
-.vm-arrow:hover{background:white;box-shadow:0 4px 18px rgba(0,0,0,.2);}
-.vm-arrow.prev{left:9px;}
-.vm-arrow.next{right:9px;}
-.vm-arrow.hidden-arrow{opacity:0;pointer-events:none;}
-/* Dots de posición */
-.vm-dots{
-  position:absolute;bottom:10px;left:0;right:0;
-  display:flex;justify-content:center;gap:5px;z-index:3;
-}
-.vm-dot{
-  width:6px;height:6px;border-radius:50%;
-  background:rgba(255,255,255,.5);
-  border:none;cursor:pointer;padding:0;transition:all .2s;
-}
-.vm-dot.active{background:white;width:18px;border-radius:3px;}
-
-/* ── Panel derecho: columna flex, sin overflow propio ── */
-.vm-info-panel{
-  flex:1;min-width:0;
-  display:flex;flex-direction:column;
-  overflow:hidden;
-}
-/* Zona de texto — scrollea solo si el contenido no entra */
-.vm-info-scroll{
-  flex:1;overflow-y:auto;
-  padding:24px 24px 12px;
-}
-/* Footer pegado abajo dentro del panel */
-.vm-info-footer{
-  padding:14px 24px 20px;
-  border-top:1.5px solid #f0f0f0;
-  background:white;flex-shrink:0;
-}
-
-.vm-header{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:10px;}
-.vm-header-left{flex:1;min-width:0;}
-.vm-title{font-family:'Nunito',sans-serif;font-weight:900;font-size:1.08rem;color:#2d2d2d;line-height:1.3;margin-bottom:5px;}
-.vm-price{font-family:'Nunito',sans-serif;font-weight:900;font-size:1.15rem;color:var(--turquesa);}
-.vm-close{background:none;border:none;font-size:1rem;cursor:pointer;color:#bbb;width:30px;height:30px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .2s;}
-.vm-close:hover{background:#f0f0f0;color:#555;}
-.vm-desc{font-size:.83rem;color:#888;line-height:1.7;margin-bottom:16px;}
-.vm-divider{height:1px;background:#f0f0f0;margin:0 0 16px;}
-
-/* Label genérico "Modelo:" */
-.vm-label{font-family:'Nunito',sans-serif;font-weight:800;font-size:.78rem;color:#777;margin-bottom:10px;display:flex;align-items:center;gap:5px;}
-.vm-selected-name{color:var(--turquesa);}
-
-/* Chips de variante — sin dot de color, 100% genéricos */
-.vm-variants{display:flex;flex-wrap:wrap;gap:7px;}
-.variant-chip{
-  padding:7px 14px;border-radius:50px;
-  border:2px solid #e8e8e8;background:white;
-  font-family:'Quicksand',sans-serif;font-weight:700;font-size:.76rem;
-  cursor:pointer;color:#555;transition:all .18s;
-}
-.variant-chip:hover{border-color:var(--lila);color:var(--lila);}
-.variant-chip.active{border-color:var(--lila);background:var(--lila);color:white;}
-/* Sin stock: gris, tachado, no clickeable */
-.variant-chip.sin-stock{
-  border-color:#e0e0e0;background:#fafafa;color:#bbb;
-  cursor:not-allowed;
-  text-decoration:line-through;
-  opacity:.65;
-  position:relative;
-}
-.variant-chip.sin-stock:hover{border-color:#e0e0e0;color:#bbb;}
-.sin-stock-tag{
-  display:inline-block;
-  font-size:.62rem;font-weight:800;
-  background:#e8e8e8;color:#aaa;
-  border-radius:50px;padding:1px 6px;
-  margin-left:4px;vertical-align:middle;
-  text-decoration:none;          /* que el tag no tenga tachado */
-}
-
-/* Botón agregar al carrito */
-.vm-confirm-btn{
-  width:100%;background:var(--turquesa);color:white;border:none;border-radius:50px;
-  padding:13px 20px;font-family:'Quicksand',sans-serif;font-weight:900;font-size:.88rem;
-  cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;
-  transition:all .2s;box-shadow:0 4px 18px rgba(126,195,176,.3);
-}
-.vm-confirm-btn:hover{background:#6ab3a0;transform:translateY(-1px);box-shadow:0 8px 24px rgba(126,195,176,.4);}
-
-/* ── RESPONSIVE: mobile pantalla completa ── */
-@media(max-width:600px){
-  .vm-overlay{padding:0;align-items:flex-end;}
-  .vm-modal{
-    flex-direction:column;
-    width:100%;
-    /* 100% de la altura visible del viewport, incluyendo barra de notificaciones mobile */
-    height:100dvh;
-    max-height:100dvh;
-    border-radius:0;           /* sin redondeo: ocupa toda la pantalla */
-    transform:translateY(100%);
-  }
-  .vm-overlay.open .vm-modal{transform:translateY(0);}
-  /* Imagen ocupa 60% del alto de pantalla */
-  .vm-img-panel{
-    flex:none;
-    width:100%;
-    height:55dvh;
-  }
-  /* Panel info: el 40% restante, con su footer pegado abajo */
-  .vm-info-panel{
-    flex:none;
-    height:45dvh;
-  }
-  .vm-info-scroll{padding:12px 18px 6px;}
-  .vm-info-footer{padding:10px 18px 14px;}
-  .vm-title{font-size:1.1rem;}
-  .vm-price{font-size:1.2rem;}
-}
-
-.fade-up{opacity:0;transform:translateY(22px);transition:opacity .5s ease,transform .5s ease;}
-.fade-up.visible{opacity:1;transform:translateY(0);}
-@media(max-width:768px){
-  .products-grid{grid-template-columns:repeat(2,1fr);gap:13px;}
-  .header-trixi{width:70px;}
-  .header-rex{width:85px;}
-}
-@media(max-width:380px){
-  .products-grid{grid-template-columns:repeat(2,1fr);gap:9px;}
-  .product-img-wrap{font-size:2.6rem;}
-  .product-name{font-size:.8rem;}
-  .catalog-main{padding:28px 12px 56px;}
-  .add-btn{font-size:.76rem;padding:8px 12px;}
-}
-</style>
+<link rel="stylesheet" href="catalogo.css">
 </head>
 <body>
+
+<a href="#catalogo" class="visually-hidden">Saltar al catálogo</a>
 
 <nav class="navbar">
   <div class="navbar-inner">
     <div class="nav-logo">
-      <img src="logo.svg" alt="Simo & Gena">
+      <a href="index.html" aria-label="Simo & Gena — Inicio"><img src="logo.svg" alt="Simo & Gena Baby Store" width="140" height="40"></a>
     </div>
     <div class="nav-right">
       <ul class="nav-links">
@@ -244,11 +49,11 @@
         <li><a href="index.html#contacto">Contacto</a></li>
       </ul>
       <div class="nav-actions">
-        <button class="cart-icon-btn" onclick="toggleCart()" aria-label="Carrito">
-          <svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+        <button class="cart-icon-btn" onclick="toggleCart()" aria-label="Abrir carrito">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
           <span class="cart-badge" id="cartBadge">0</span>
         </button>
-        <button class="hamburger" onclick="toggleMobile()" aria-label="Menú">
+        <button class="hamburger" onclick="toggleMobile()" aria-label="Abrir menú" aria-expanded="false" aria-controls="mobileMenu">
           <span></span><span></span><span></span>
         </button>
       </div>
@@ -268,28 +73,46 @@
       <p>Ropa, blanquería, accesorios y sensorial para tu bebé. ¡Agregá lo que te guste y enviá tu pedido por WhatsApp!</p>
     </div>
     <div class="header-dinos">
-      <img src="trixi.png" alt="Trixi" class="header-trixi">
-      <img src="rex.png" alt="Rex" class="header-rex">
+      <img src="trixi.png" alt="" class="header-trixi" width="800" height="800" loading="lazy">
+      <img src="rex.png" alt="" class="header-rex" width="800" height="800" loading="lazy">
     </div>
   </div>
 </div>
 
-<div class="catalog-main">
-  <div class="filter-tabs">
-    <button class="filter-tab active" onclick="filterCat('todos',this)">Todos</button>
-    <button class="filter-tab" onclick="filterCat('Indumentaria',this)"><img src="indumentaria.png" alt="" class="filter-tab-icon"> Indumentaria</button>
-    <button class="filter-tab" onclick="filterCat('Blanqueria',this)"><img src="blanqueria.png" alt="" class="filter-tab-icon"> Blanquería</button>
-    <button class="filter-tab" onclick="filterCat('Accesorios',this)"><img src="accesorios.png" alt="" class="filter-tab-icon"> Accesorios</button>
-    <button class="filter-tab" onclick="filterCat('Sensorial',this)"><img src="sensorial.png" alt="" class="filter-tab-icon"> Sensorial</button>
+<main class="catalog-main" id="catalogo">
+  <div class="catalog-search">
+    <span class="search-ico" aria-hidden="true">🔎</span>
+    <input type="search" id="searchInput" placeholder="Buscar producto…" aria-label="Buscar producto" autocomplete="off">
+    <button class="search-clear" id="searchClear" onclick="clearSearch()" aria-label="Limpiar búsqueda">✕</button>
   </div>
+
+  <div class="catalog-controls">
+    <div class="filter-tabs" role="group" aria-label="Filtrar por categoría">
+      <button class="filter-tab active" onclick="filterCat('todos',this)">Todos</button>
+      <button class="filter-tab" onclick="filterCat('Indumentaria',this)"><img src="indumentaria.png" alt="" class="filter-tab-icon" width="444" height="444" loading="lazy"> Indumentaria</button>
+      <button class="filter-tab" onclick="filterCat('Blanqueria',this)"><img src="blanqueria.png" alt="" class="filter-tab-icon" width="445" height="444" loading="lazy"> Blanquería</button>
+      <button class="filter-tab" onclick="filterCat('Accesorios',this)"><img src="accesorios.png" alt="" class="filter-tab-icon" width="444" height="444" loading="lazy"> Accesorios</button>
+      <button class="filter-tab" onclick="filterCat('Sensorial',this)"><img src="sensorial.png" alt="" class="filter-tab-icon" width="443" height="445" loading="lazy"> Sensorial</button>
+    </div>
+    <label class="sort-wrap">Ordenar:
+      <select id="sortSelect" onchange="applyView()" aria-label="Ordenar productos">
+        <option value="default">Recomendado</option>
+        <option value="price-asc">Precio: menor a mayor</option>
+        <option value="price-desc">Precio: mayor a menor</option>
+        <option value="name-asc">Nombre: A-Z</option>
+      </select>
+    </label>
+  </div>
+
+  <p class="results-count" id="resultsCount" aria-live="polite"></p>
   <div class="products-grid" id="productsGrid"></div>
-</div>
+</main>
 
 <footer>
   <div class="footer-inner">
     <div class="footer-top">
       <div>
-        <div class="footer-logo"><img src="logo_completo.svg" alt="Simo & Gena Baby Store"></div>
+        <div class="footer-logo"><img src="logo_completo.svg" alt="Simo & Gena Baby Store" width="180" height="100"></div>
         <p class="footer-tagline">Artículos para bebés de 0 a 2 años. Calidad, amor y cuidado en cada producto.</p>
       </div>
       <div>
@@ -312,40 +135,40 @@
       <div>
         <div class="footer-links-title">Seguinos</div>
         <div class="social-links">
-          <a href="https://instagram.com/simogenababystore" class="social-link" target="_blank" title="Instagram"><img src="ig.png" alt="Instagram"></a>
-          <a href="https://wa.me/5492213997535" class="social-link" target="_blank" title="WhatsApp"><img src="wtsp.png" alt="WhatsApp"></a>
-          <a href="mailto:" class="social-link" title="Email"><img src="mail.png" alt="Mail"></a>
+          <a href="https://instagram.com/simoygena" class="social-link" target="_blank" rel="noopener noreferrer" title="Instagram" aria-label="Instagram"><img src="ig.png" alt="" width="128" height="128" loading="lazy"></a>
+          <a href="https://wa.me/5492213997535" class="social-link" target="_blank" rel="noopener noreferrer" title="WhatsApp" aria-label="WhatsApp"><img src="wtsp.png" alt="" width="128" height="128" loading="lazy"></a>
+          <a href="mailto:simoygena@gmail.com" class="social-link" title="Email" aria-label="Email"><img src="mail.png" alt="" width="128" height="128" loading="lazy"></a>
         </div>
       </div>
     </div>
     <div class="footer-bottom">
-      <p class="footer-copy">© 2025 Simo & Gena Baby Store. Todos los derechos reservados.</p>
-      <p class="footer-credit">Diseño y desarrollo por <a href="https://www.martinromerostudio.com.ar" target="_blank">Martin Romero Studio</a></p>
+      <p class="footer-copy">© <span data-year>2026</span> Simo & Gena Baby Store. Todos los derechos reservados.</p>
+      <p class="footer-credit">Diseño y desarrollo por <a href="https://www.martinromerostudio.com.ar" target="_blank" rel="noopener noreferrer">Martin Romero Studio</a></p>
     </div>
   </div>
 </footer>
 
 <div class="float-bar">
-  <a href="https://instagram.com/simogenababystore" class="float-btn" target="_blank">
-    <img src="ig.png" alt="Instagram"><span class="float-label">Instagram</span>
+  <a href="https://instagram.com/simoygena" class="float-btn" target="_blank" rel="noopener noreferrer" aria-label="Seguinos en Instagram">
+    <img src="ig.png" alt="" width="128" height="128"><span class="float-label">Instagram</span>
   </a>
-  <a href="https://wa.me/5492213997535" class="float-btn" target="_blank">
-    <img src="wtsp.png" alt="WhatsApp"><span class="float-label">Escribinos</span>
+  <a href="https://wa.me/5492213997535" class="float-btn" target="_blank" rel="noopener noreferrer" aria-label="Escribinos por WhatsApp">
+    <img src="wtsp.png" alt="" width="128" height="128"><span class="float-label">Escribinos</span>
   </a>
 </div>
 
 <!-- CARRITO DRAWER -->
 <div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div>
-<div class="cart-drawer" id="cartDrawer">
+<div class="cart-drawer" id="cartDrawer" role="dialog" aria-modal="true" aria-label="Tu pedido" aria-hidden="true">
   <div class="cart-header">
     <div class="cart-title">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#7EC3B0" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#3E9A85" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
       Tu pedido
     </div>
-    <button class="close-btn" onclick="toggleCart()">✕</button>
+    <button class="close-btn" onclick="toggleCart()" aria-label="Cerrar carrito">✕</button>
   </div>
   <div class="cart-items" id="cartItems">
-    <div class="cart-empty"><div class="cart-empty-emoji">🛒</div><p>Tu carrito está vacío</p></div>
+    <div class="cart-empty"><div class="cart-empty-emoji" aria-hidden="true">🛒</div><p>Tu carrito está vacío</p></div>
   </div>
   <div class="cart-footer">
     <div class="cart-total">
@@ -353,256 +176,258 @@
       <span class="cart-total-price" id="cartTotal">$0</span>
     </div>
     <button class="btn-whatsapp" onclick="sendToWhatsApp()">
-      <img src="wtsp.png" alt="">Enviar pedido por WhatsApp
+      <img src="wtsp.png" alt="" width="128" height="128">Enviar pedido por WhatsApp
     </button>
   </div>
 </div>
 
-<!-- MODAL DE VARIANTES/MODELOS -->
+<!-- MODAL DE VARIANTES / INFO -->
 <div class="vm-overlay" id="vmOverlay" onclick="handleVmOverlayClick(event)">
-  <div class="vm-modal" id="vmModal"><!-- llenado dinámicamente --></div>
+  <div class="vm-modal" id="vmModal" role="dialog" aria-modal="true" aria-label="Detalle del producto"><!-- llenado dinámicamente --></div>
 </div>
 
+<script src="app.js"></script>
 <script>
-const WA='5492213997535';
-const bgMap={Indumentaria:'bg-I',Blanqueria:'bg-B',Accesorios:'bg-A',Sensorial:'bg-S'};
 const badgeMap={Indumentaria:'badge-I',Blanqueria:'badge-B',Accesorios:'badge-A',Sensorial:'badge-S'};
-
-/* ── FALLBACK — 011 tiene variantes de ejemplo ── */
-const FALLBACK=[
-  {id:'001',nombre:'Body manga corta',categoria:'Indumentaria',precio:4500,descripcion:'100% algodón, talle 0-3m',descripcion_larga:'',emoji:'👕',disponible:true,imagen_url:'',todas_imagenes:[],variantes:[],tiene_variantes:false,sin_stock:new Set()},
-  {id:'002',nombre:'Ajuar recién nacido',categoria:'Indumentaria',precio:8900,descripcion:'Set completo body + ranita + gorra',descripcion_larga:'',emoji:'🎀',disponible:true,imagen_url:'',todas_imagenes:[],variantes:[],tiene_variantes:false,sin_stock:new Set()},
-  {id:'003',nombre:'Enterito dinosaurio',categoria:'Indumentaria',precio:6200,descripcion:'Polar suave, talle 3-6m',descripcion_larga:'',emoji:'🦕',disponible:true,imagen_url:'',todas_imagenes:[],variantes:[],tiene_variantes:false,sin_stock:new Set()},
-  {id:'007',nombre:'Sábana cuna estampada',categoria:'Blanqueria',precio:7800,descripcion:'Set x2, algodón premium',descripcion_larga:'',emoji:'🛏️',disponible:true,imagen_url:'',todas_imagenes:[],variantes:[],tiene_variantes:false,sin_stock:new Set()},
-  {id:'011',nombre:'Babero algodón',categoria:'Accesorios',precio:2800,descripcion:'Con broche a presión — elegí el modelo',descripcion_larga:'Babero de algodón 100% premium con broche a presión de acero inoxidable. Suave para la piel del bebé, lavable a máquina. Disponible en varios modelos — elegí el que más te guste.',emoji:'🍼',disponible:true,imagen_url:'',todas_imagenes:[],variantes:['Rojo','Verde','Azul','Amarillo'],tiene_variantes:true,sin_stock:new Set(['azul'])},
-  {id:'015',nombre:'Sonajero dino',categoria:'Sensorial',precio:3200,descripcion:'Sin BPA, colores pasteles',descripcion_larga:'',emoji:'🎵',disponible:true,imagen_url:'',todas_imagenes:[],variantes:[],tiene_variantes:false,sin_stock:new Set()},
-];
 
 const SHEET_URL='https://docs.google.com/spreadsheets/d/e/2PACX-1vRCS92M63zJbW_4P9ZZ1eZhN_DUuXvM9FML4r8EknqR-vhJizGctrJncKmu5L55QvFALZCMleFGY6OL/pub?gid=0&single=true&output=csv';
 
+/* ── Parser CSV robusto: soporta comas, comillas escapadas ("")
+   y saltos de línea dentro de celdas entre comillas ── */
 function parseCSV(text){
-  const rows=[];
-  const lines=text.replace(/\r/g,'').split('\n');
-  for(const line of lines){
-    if(!line.trim())continue;
-    const cols=[];let cur='',inQ=false;
-    for(let i=0;i<line.length;i++){
-      const ch=line[i];
-      if(ch==='"'){inQ=!inQ;}
-      else if(ch===','&&!inQ){cols.push(cur.trim());cur='';}
-      else{cur+=ch;}
+  text=text.replace(/\r\n/g,'\n').replace(/\r/g,'\n');
+  const rows=[]; let cur='', row=[], inQ=false;
+  for(let i=0;i<text.length;i++){
+    const ch=text[i];
+    if(inQ){
+      if(ch==='"'){ if(text[i+1]==='"'){cur+='"';i++;} else inQ=false; }
+      else cur+=ch;
+    }else{
+      if(ch==='"') inQ=true;
+      else if(ch===',') { row.push(cur); cur=''; }
+      else if(ch==='\n'){ row.push(cur); rows.push(row); row=[]; cur=''; }
+      else cur+=ch;
     }
-    cols.push(cur.trim());rows.push(cols);
   }
-  return rows;
+  if(cur.length||row.length){ row.push(cur); rows.push(row); }
+  return rows.map(r=>r.map(c=>c.trim())).filter(r=>r.some(c=>c!==''));
 }
 
 function driveUrl(url){
   url=url.trim();
   if(url.includes('drive.google.com')){
     const m=url.match(/\/d\/(.+?)\//);
-    if(m&&m[1])return`https://lh3.googleusercontent.com/d/${m[1]}`;
+    // =w1000: Google sirve una versión redimensionada (más liviana que la original)
+    if(m&&m[1])return`https://lh3.googleusercontent.com/d/${m[1]}=w1000`;
   }
   return url;
 }
 
 async function loadFromSheets(){
-  try{
-    const res=await fetch(SHEET_URL+'&t='+Date.now(),{cache:'no-store'});
-    if(!res.ok)throw new Error('HTTP '+res.status);
-    const text=await res.text();
-    const rows=parseCSV(text);
-    const headers=rows[0].map(h=>h.toLowerCase().trim());
-    const idx=n=>headers.indexOf(n);
+  const res=await fetch(SHEET_URL+'&t='+Date.now(),{cache:'no-store'});
+  if(!res.ok)throw new Error('HTTP '+res.status);
+  const text=await res.text();
+  const rows=parseCSV(text);
+  if(!rows.length)throw new Error('CSV vacío');
+  const headers=rows[0].map(h=>h.toLowerCase().trim());
+  const idx=n=>headers.indexOf(n);
 
-    return rows.slice(1).map(c=>{
-      // Imágenes: una URL o varias separadas por coma
-      const imgsArray=(c[idx('imagen_url')]||'').split(',').map(u=>driveUrl(u)).filter(u=>u);
-
-      // Variantes/modelos: columna "modelos" — puede ser color, estampa, talle, etc.
-      const rawMod=c[idx('modelos')]||'';
-      const variantesArr=rawMod?rawMod.split(',').map(v=>v.trim()).filter(v=>v):[];
-
-      // Modelos sin stock: columna "modelos_sin_stock" — nombres exactos separados por coma
-      const rawSinStock=c[idx('modelos_sin_stock')]||'';
-      const sinStockSet=new Set(
-        rawSinStock?rawSinStock.split(',').map(v=>v.trim().toLowerCase()).filter(v=>v):[]
-      );
-
-      return{
-        id:c[idx('id')]||'',
-        nombre:c[idx('nombre')]||'',
-        categoria:c[idx('categoria')]||'',
-        precio:parseInt((c[idx('precio')]||'0').replace(/\D/g,''))||0,
-        descripcion:c[idx('descripcion')]||'',
-        // descripcion_larga: columna opcional para el popup; si no existe usa descripcion
-        descripcion_larga:c[idx('descripcion_larga')]||c[idx('descripcion')]||'',
-        imagen_url:imgsArray[0]||'',
-        todas_imagenes:imgsArray,
-        emoji:c[idx('emoji')]||'',
-        disponible:(c[idx('disponible')]||'').toUpperCase()==='TRUE',
-        variantes:variantesArr,
-        tiene_variantes:variantesArr.length>1,
-        sin_stock:sinStockSet,   // Set con nombres en minúscula de modelos agotados
-      };
-    }).filter(p=>p.disponible&&p.nombre);
-
-  }catch(e){
-    console.warn('Sheets no disponible, usando fallback:',e);
-    return FALLBACK;
-  }
+  return rows.slice(1).map(c=>{
+    const imgsArray=(c[idx('imagen_url')]||'').split(',').map(u=>driveUrl(u)).filter(u=>u);
+    const rawMod=c[idx('modelos')]||'';
+    const variantesArr=rawMod?rawMod.split(',').map(v=>v.trim()).filter(v=>v):[];
+    const rawSinStock=c[idx('modelos_sin_stock')]||'';
+    const sinStockSet=new Set(
+      rawSinStock?rawSinStock.split(',').map(v=>v.trim().toLowerCase()).filter(v=>v):[]
+    );
+    return{
+      id:c[idx('id')]||'',
+      nombre:c[idx('nombre')]||'',
+      categoria:c[idx('categoria')]||'',
+      precio:parseInt((c[idx('precio')]||'0').replace(/\D/g,''))||0,
+      descripcion:c[idx('descripcion')]||'',
+      descripcion_larga:c[idx('descripcion_larga')]||c[idx('descripcion')]||'',
+      imagen_url:imgsArray[0]||'',
+      todas_imagenes:imgsArray,
+      emoji:c[idx('emoji')]||'',
+      disponible:(c[idx('disponible')]||'').toUpperCase()==='TRUE',
+      variantes:variantesArr,
+      tiene_variantes:variantesArr.length>1,
+      sin_stock:sinStockSet,
+    };
+  }).filter(p=>p.disponible&&p.nombre);
 }
 
 let productos=[];
-let cart=JSON.parse(localStorage.getItem('sg_cart')||'[]');
-function saveCart(){localStorage.setItem('sg_cart',JSON.stringify(cart));}
+let currentCat='todos';
 
-/* ── Genera el HTML del botón de una card leyendo el carrito actual ── */
+/* ── Botón de card según estado del carrito ── */
 function cardBtnHTML(p){
   if(p.tiene_variantes){
-    // Sumar todas las unidades de este producto (cualquier modelo)
     const totalEnCarrito=cart.filter(i=>i.id.startsWith(p.id+'__')).reduce((s,i)=>s+i.qty,0);
     if(totalEnCarrito>0){
-      return`<button class="add-btn variants-btn added" id="btn-${p.id}" onclick="event.stopPropagation();event.preventDefault();openVariantsModal('${p.id}')">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+      return`<button class="add-btn variants-btn added" id="btn-${escapeHtml(p.id)}" onclick="openVariantsModal('${escapeHtml(p.id)}')">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
         En carrito (${totalEnCarrito}) — ver modelos
       </button>`;
     }
-    return`<button class="add-btn variants-btn" id="btn-${p.id}" onclick="event.stopPropagation();event.preventDefault();openVariantsModal('${p.id}')">
-      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+    return`<button class="add-btn variants-btn" id="btn-${escapeHtml(p.id)}" onclick="openVariantsModal('${escapeHtml(p.id)}')">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
       Ver modelos
     </button>`;
   }else{
     const inCart=cart.find(i=>i.id===p.id);
     if(inCart){
-      return`<button class="add-btn added" id="btn-${p.id}" onclick="event.stopPropagation();event.preventDefault();addToCart('${p.id}')">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+      return`<button class="add-btn added" id="btn-${escapeHtml(p.id)}" onclick="addToCart('${escapeHtml(p.id)}')">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
         En carrito (${inCart.qty}) — agregar otro
       </button>`;
     }
-    return`<button class="add-btn" id="btn-${p.id}" onclick="event.stopPropagation();event.preventDefault();addToCart('${p.id}')">
-      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+    return`<button class="add-btn" id="btn-${escapeHtml(p.id)}" onclick="addToCart('${escapeHtml(p.id)}')">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
       Agregar
     </button>`;
   }
 }
 
-/* ── RENDER DE CARDS ── */
-function renderProducts(cat){
+/* ── Filtro + orden + búsqueda combinados ── */
+function getVisibleList(){
+  const q=(document.getElementById('searchInput').value||'').trim().toLowerCase();
+  let list=productos.filter(p=>p.disponible);
+  if(currentCat!=='todos')list=list.filter(p=>p.categoria===currentCat);
+  if(q){
+    list=list.filter(p=>
+      (p.nombre||'').toLowerCase().includes(q) ||
+      (p.descripcion||'').toLowerCase().includes(q) ||
+      (p.categoria||'').toLowerCase().includes(q)
+    );
+  }
+  const sort=document.getElementById('sortSelect').value;
+  if(sort==='price-asc')list=[...list].sort((a,b)=>a.precio-b.precio);
+  else if(sort==='price-desc')list=[...list].sort((a,b)=>b.precio-a.precio);
+  else if(sort==='name-asc')list=[...list].sort((a,b)=>a.nombre.localeCompare(b.nombre,'es'));
+  return list;
+}
+
+function renderList(list){
   const grid=document.getElementById('productsGrid');
-  const list=cat==='todos'?productos.filter(p=>p.disponible):productos.filter(p=>p.disponible&&p.categoria===cat);
+  const countEl=document.getElementById('resultsCount');
   if(!list.length){
-    grid.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:60px 20px;color:#aaa;font-weight:700;">No hay productos en esta categoría todavía.</div>';
+    grid.innerHTML='<div class="catalog-empty">No encontramos productos con esos criterios.</div>';
+    countEl.textContent='';
     return;
   }
+  countEl.textContent=`${list.length} producto${list.length!==1?'s':''}`;
   grid.innerHTML=list.map(p=>{
+    const nombre=escapeHtml(p.nombre);
     const imgTag=p.imagen_url
-      ?`<img src="${p.imagen_url}" alt="${p.nombre}" style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0;border-radius:0;" onerror="this.style.display='none'">`
+      ?`<img src="${escapeHtml(p.imagen_url)}" alt="${nombre}" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0;" onerror="this.style.display='none'">`
       :'';
-    return`<div class="product-card fade-up" onclick="if(event.target.closest('button'))return;openProductModal('${p.id}')">
-      <div class="product-img-wrap ${bgMap[p.categoria]||''}" style="position:relative;">
-        ${imgTag}
-        <span class="cat-badge ${badgeMap[p.categoria]||''}" style="position:absolute;z-index:2;">${p.categoria}</span>
-        ${p.tiene_variantes?'<span class="variants-badge">+ modelos</span>':''}
-        ${!p.imagen_url?`<span style="position:relative;z-index:1;">${p.emoji||'📦'}</span>`:''}
-      </div>
-      <div class="product-info">
-        <div class="product-name">${p.nombre}</div>
-        <div class="product-desc">${p.descripcion}</div>
-        <div class="product-footer">
-          <div class="product-price">$${p.precio.toLocaleString('es-AR')}</div>
-          ${cardBtnHTML(p)}
+    return`<div class="product-card fade-up">
+      <button type="button" class="product-open" aria-label="Ver detalle de ${nombre}" onclick="openProductModal('${escapeHtml(p.id)}')">
+        <div class="product-img-wrap ${bgMap[p.categoria]||''}">
+          ${imgTag}
+          <span class="cat-badge ${badgeMap[p.categoria]||''}">${escapeHtml(p.categoria)}</span>
+          ${p.tiene_variantes?'<span class="variants-badge">+ modelos</span>':''}
+          ${!p.imagen_url?`<span style="position:relative;z-index:1;">${escapeHtml(p.emoji||'📦')}</span>`:''}
         </div>
+        <div class="product-info">
+          <div class="product-name">${nombre}</div>
+          <div class="product-desc">${escapeHtml(p.descripcion)}</div>
+        </div>
+      </button>
+      <div class="product-footer">
+        <div class="product-price">$${p.precio.toLocaleString('es-AR')}</div>
+        ${cardBtnHTML(p)}
       </div>
     </div>`;
   }).join('');
   observeFadeUps();
 }
 
+function applyView(){ renderList(getVisibleList()); }
+
+function onSearchInput(){
+  const clr=document.getElementById('searchClear');
+  clr.classList.toggle('show',!!document.getElementById('searchInput').value);
+  applyView();
+}
+function clearSearch(){
+  const inp=document.getElementById('searchInput');
+  inp.value='';document.getElementById('searchClear').classList.remove('show');
+  inp.focus();applyView();
+}
+
+function filterCat(cat,btn){
+  currentCat=cat;
+  document.querySelectorAll('.filter-tab').forEach(t=>t.classList.remove('active'));
+  if(btn)btn.classList.add('active');
+  applyView();
+}
+
 /* ── ROUTER: click en card → modal correcto ── */
 function openProductModal(id){
   const p=productos.find(x=>x.id===id);
   if(!p)return;
-  if(p.tiene_variantes){
-    openVariantsModal(id);
-  }else{
-    openInfoModal(id);
-  }
+  p.tiene_variantes?openVariantsModal(id):openInfoModal(id);
 }
 
-/* ── MODAL INFO (productos sin variantes) ── */
+/* ── MODAL INFO (sin variantes) ── */
 function openInfoModal(id){
   const p=productos.find(x=>x.id===id);
   if(!p)return;
-
+  vmCurrentProduct=p;
   const tieneImgs=p.todas_imagenes&&p.todas_imagenes.length>0;
-
-  /* Panel izquierdo: imagen o emoji */
   const imgPanelHTML=tieneImgs
-    ?`<div class="vm-carousel">
-        <img src="${p.todas_imagenes[0]}" alt="${p.nombre}" class="active" onerror="this.style.display='none'">
-      </div>`
-    :`<div class="vm-emoji-fallback">${p.emoji||'📦'}</div>`;
-
-  /* Estado del botón según si ya está en el carrito */
+    ?`<div class="vm-carousel"><img src="${escapeHtml(p.todas_imagenes[0])}" alt="${escapeHtml(p.nombre)}" class="active" onerror="this.style.display='none'"></div>`
+    :`<div class="vm-emoji-fallback">${escapeHtml(p.emoji||'📦')}</div>`;
   const inCart=cart.find(i=>i.id===p.id);
   const btnAgregar=inCart
-    ?`<button class="vm-confirm-btn" style="background:var(--verde);" onclick="addToCartFromModal('${p.id}')">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+    ?`<button class="vm-confirm-btn" style="background:#5a9a3f;" onclick="addToCartFromModal('${escapeHtml(p.id)}')">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
         En carrito (${inCart.qty}) — agregar otro
       </button>`
-    :`<button class="vm-confirm-btn" onclick="addToCartFromModal('${p.id}')">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+    :`<button class="vm-confirm-btn" onclick="addToCartFromModal('${escapeHtml(p.id)}')">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
         Agregar al carrito
       </button>`;
-
   document.getElementById('vmModal').innerHTML=`
     <div class="vm-img-panel">${imgPanelHTML}</div>
     <div class="vm-info-panel">
       <div class="vm-info-scroll">
         <div class="vm-header">
           <div class="vm-header-left">
-            <div class="vm-title">${p.nombre}</div>
+            <div class="vm-title">${escapeHtml(p.nombre)}</div>
             <div class="vm-price">$${p.precio.toLocaleString('es-AR')}</div>
           </div>
-          <button class="vm-close" onclick="closeVariantsModal()">✕</button>
+          <button class="vm-close" onclick="closeVariantsModal()" aria-label="Cerrar">✕</button>
         </div>
-        ${(p.descripcion_larga||p.descripcion)?`<p class="vm-desc">${p.descripcion_larga||p.descripcion}</p>`:''}
+        ${(p.descripcion_larga||p.descripcion)?`<p class="vm-desc">${escapeHtml(p.descripcion_larga||p.descripcion)}</p>`:''}
         <div class="vm-divider"></div>
         <div class="vm-label" style="color:var(--turquesa);">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
           Unidad disponible
         </div>
       </div>
-      <div class="vm-info-footer" id="vmInfoFooter">
-        ${btnAgregar}
-      </div>
-    </div>
-  `;
-
-  document.getElementById('vmOverlay').classList.add('open');
-  document.body.style.overflow='hidden';
+      <div class="vm-info-footer" id="vmInfoFooter">${btnAgregar}</div>
+    </div>`;
+  openVmOverlay();
 }
 
-/* Agregar al carrito desde el modal info y actualizar el botón sin cerrar */
 function addToCartFromModal(id){
   const p=productos.find(p=>p.id===id);if(!p)return;
   const ex=cart.find(i=>i.id===id);
-  ex?ex.qty++:cart.push({...p,qty:1});
+  ex?ex.qty++:cart.push({id:p.id,nombre:p.nombre,categoria:p.categoria,precio:p.precio,emoji:p.emoji,imagen_url:p.imagen_url||'',qty:1});
   saveCart();updateCartUI();
-  // Actualizar botón del modal en vivo
   const footer=document.getElementById('vmInfoFooter');
   if(footer){
     const inCart=cart.find(i=>i.id===id);
-    footer.innerHTML=`<button class="vm-confirm-btn" style="background:var(--verde);" onclick="addToCartFromModal('${id}')">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+    footer.innerHTML=`<button class="vm-confirm-btn" style="background:#5a9a3f;" onclick="addToCartFromModal('${escapeHtml(id)}')">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
       En carrito (${inCart.qty}) — agregar otro
     </button>`;
   }
-  // Actualizar también el botón de la card en el grid
-  const p2=productos.find(x=>x.id===id);
-  const btn=document.getElementById('btn-'+id);
-  if(btn&&p2)btn.outerHTML=cardBtnHTML(p2);
+  refreshCardBtn(id);
 }
 
 /* ── MODAL DE VARIANTES ── */
@@ -613,46 +438,39 @@ function openVariantsModal(id){
   const p=productos.find(x=>x.id===id);
   if(!p)return;
   vmCurrentProduct=p;
-  // Arrancar en el primer modelo que tenga stock
   vmCurrentIndex=p.variantes.findIndex(v=>!p.sin_stock.has(v.toLowerCase()));
-  if(vmCurrentIndex===-1)vmCurrentIndex=0; // todos sin stock — igual mostramos el primero
+  if(vmCurrentIndex===-1)vmCurrentIndex=0;
 
   const tieneImgs=p.todas_imagenes&&p.todas_imagenes.length>0;
   const multiImg=tieneImgs&&p.todas_imagenes.length>1;
 
-  /* Panel izquierdo */
   let imgPanelHTML;
   if(tieneImgs){
     const imgs=p.todas_imagenes.map((url,i)=>
-      `<img src="${url}" alt="${p.variantes[i]||p.nombre}" class="${i===0?'active':'hidden'}" data-vm-idx="${i}" onerror="this.style.display='none'">`
+      `<img src="${escapeHtml(url)}" alt="${escapeHtml(p.variantes[i]||p.nombre)}" class="${i===0?'active':'hidden'}" data-vm-idx="${i}" onerror="this.style.display='none'">`
     ).join('');
     const dots=multiImg
-      ?`<div class="vm-dots">${p.todas_imagenes.map((_,i)=>`<button class="vm-dot${i===0?' active':''}" data-dot="${i}" onclick="vmNavigateTo(${i})"></button>`).join('')}</div>`
+      ?`<div class="vm-dots">${p.todas_imagenes.map((_,i)=>`<button class="vm-dot${i===0?' active':''}" data-dot="${i}" onclick="vmNavigateTo(${i})" aria-label="Imagen ${i+1}"></button>`).join('')}</div>`
       :'';
     imgPanelHTML=`<div class="vm-carousel" id="vmCarousel">
       ${imgs}
-      ${multiImg?`<button class="vm-arrow prev hidden-arrow" id="vmPrev" onclick="vmNavigate(-1)">&#8249;</button>
-                  <button class="vm-arrow next" id="vmNext" onclick="vmNavigate(1)">&#8250;</button>`:''}
+      ${multiImg?`<button class="vm-arrow prev hidden-arrow" id="vmPrev" onclick="vmNavigate(-1)" aria-label="Anterior">&#8249;</button>
+                  <button class="vm-arrow next" id="vmNext" onclick="vmNavigate(1)" aria-label="Siguiente">&#8250;</button>`:''}
       ${dots}
     </div>`;
   }else{
-    imgPanelHTML=`<div class="vm-emoji-fallback">${p.emoji||'📦'}</div>`;
+    imgPanelHTML=`<div class="vm-emoji-fallback">${escapeHtml(p.emoji||'📦')}</div>`;
   }
 
-  /* Chips de variante — marcando los sin stock */
   const chips=p.variantes.map((v,i)=>{
     const agotado=p.sin_stock.has(v.toLowerCase());
     if(agotado){
-      // Sin stock: no clickeable, tachado, tag "Sin stock"
-      return`<button class="variant-chip sin-stock" disabled>
-        ${v}<span class="sin-stock-tag">Sin stock</span>
-      </button>`;
+      return`<button class="variant-chip sin-stock" disabled>${escapeHtml(v)}<span class="sin-stock-tag">Sin stock</span></button>`;
     }
     const isActive=i===vmCurrentIndex;
-    return`<button class="variant-chip${isActive?' active':''}" data-idx="${i}" onclick="vmSelectVariant(${i},this)">${v}</button>`;
+    return`<button class="variant-chip${isActive?' active':''}" data-idx="${i}" onclick="vmSelectVariant(${i},this)">${escapeHtml(v)}</button>`;
   }).join('');
 
-  /* ¿Todos los modelos están sin stock? */
   const todosSinStock=p.variantes.every(v=>p.sin_stock.has(v.toLowerCase()));
 
   document.getElementById('vmModal').innerHTML=`
@@ -661,41 +479,37 @@ function openVariantsModal(id){
       <div class="vm-info-scroll">
         <div class="vm-header">
           <div class="vm-header-left">
-            <div class="vm-title">${p.nombre}</div>
+            <div class="vm-title">${escapeHtml(p.nombre)}</div>
             <div class="vm-price">$${p.precio.toLocaleString('es-AR')}</div>
           </div>
-          <button class="vm-close" onclick="closeVariantsModal()">✕</button>
+          <button class="vm-close" onclick="closeVariantsModal()" aria-label="Cerrar">✕</button>
         </div>
-        ${(p.descripcion_larga||p.descripcion)?`<p class="vm-desc">${p.descripcion_larga||p.descripcion}</p>`:''}
+        ${(p.descripcion_larga||p.descripcion)?`<p class="vm-desc">${escapeHtml(p.descripcion_larga||p.descripcion)}</p>`:''}
         <div class="vm-divider"></div>
-        <div class="vm-label">Modelo: <span class="vm-selected-name" id="vmSelectedName">${p.variantes[vmCurrentIndex]||''}</span></div>
+        <div class="vm-label">Modelo: <span class="vm-selected-name" id="vmSelectedName">${escapeHtml(p.variantes[vmCurrentIndex]||'')}</span></div>
         <div class="vm-variants">${chips}</div>
       </div>
       <div class="vm-info-footer">
-        ${todosSinStock?
-          `<button class="vm-confirm-btn" disabled style="background:#ccc;box-shadow:none;cursor:not-allowed;">
-            Sin stock disponible por el momento
-          </button>`
-         :`<button class="vm-confirm-btn" id="vmConfirmBtn" onclick="addVariantToCart()">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-            Agregar al carrito
-          </button>`
-        }
+        ${todosSinStock
+          ?`<button class="vm-confirm-btn" disabled style="background:#ccc;box-shadow:none;cursor:not-allowed;">Sin stock disponible por el momento</button>`
+          :`<button class="vm-confirm-btn" id="vmConfirmBtn" onclick="addVariantToCart()">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              Agregar al carrito
+            </button>`}
       </div>
-    </div>
-  `;
-
-  document.getElementById('vmOverlay').classList.add('open');
-  document.body.style.overflow='hidden';
+    </div>`;
+  openVmOverlay();
   vmUpdateConfirmBtn();
 }
 
+function openVmOverlay(){
+  document.getElementById('vmOverlay').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function isVmOpen(){ return document.getElementById('vmOverlay').classList.contains('open'); }
+
 function closeVariantsModal(){
-  // Refrescar botón de la card del producto que se estaba viendo
-  if(vmCurrentProduct){
-    const btn=document.getElementById('btn-'+vmCurrentProduct.id);
-    if(btn)btn.outerHTML=cardBtnHTML(vmCurrentProduct);
-  }
+  if(vmCurrentProduct)refreshCardBtn(vmCurrentProduct.id);
   document.getElementById('vmOverlay').classList.remove('open');
   document.body.style.overflow='';
   vmCurrentProduct=null;
@@ -705,25 +519,28 @@ function handleVmOverlayClick(e){
   if(e.target===document.getElementById('vmOverlay'))closeVariantsModal();
 }
 
+function refreshCardBtn(id){
+  const baseId=id.includes('__')?id.split('__')[0]:id;
+  const p=productos.find(x=>x.id===baseId);
+  const btn=document.getElementById('btn-'+baseId);
+  if(btn&&p)btn.outerHTML=cardBtnHTML(p);
+}
+
 function vmNavigate(dir){
   if(!vmCurrentProduct)return;
   const total=vmCurrentProduct.todas_imagenes.length;
   vmCurrentIndex=(vmCurrentIndex+dir+total)%total;
   vmSyncCarousel();vmSyncChip();
 }
-function vmNavigateTo(idx){
-  vmCurrentIndex=idx;vmSyncCarousel();vmSyncChip();
-}
+function vmNavigateTo(idx){vmCurrentIndex=idx;vmSyncCarousel();vmSyncChip();}
 function vmSelectVariant(idx,chipEl){
   vmCurrentIndex=idx;
   document.querySelectorAll('.variant-chip').forEach(c=>c.classList.remove('active'));
   chipEl.classList.add('active');
   document.getElementById('vmSelectedName').textContent=vmCurrentProduct.variantes[idx]||'';
   vmSyncCarousel();
-  vmUpdateConfirmBtn(); // refleja si este modelo ya está en carrito
+  vmUpdateConfirmBtn();
 }
-
-/* Actualiza el botón confirmar según el estado del modelo actualmente seleccionado */
 function vmUpdateConfirmBtn(){
   const btn=document.getElementById('vmConfirmBtn');
   if(!btn||!vmCurrentProduct)return;
@@ -731,11 +548,11 @@ function vmUpdateConfirmBtn(){
   const cartId=`${vmCurrentProduct.id}__${modelo.toLowerCase().replace(/\s+/g,'_')}`;
   const inCart=cart.find(i=>i.id===cartId);
   if(inCart){
-    btn.style.background='var(--verde)';
-    btn.innerHTML=`<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg> En carrito (${inCart.qty}) — agregar otro`;
+    btn.style.background='#5a9a3f';
+    btn.innerHTML=`<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg> En carrito (${inCart.qty}) — agregar otro`;
   }else{
     btn.style.background='';
-    btn.innerHTML=`<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> Agregar al carrito`;
+    btn.innerHTML=`<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> Agregar al carrito`;
   }
 }
 function vmSyncCarousel(){
@@ -757,12 +574,11 @@ function vmSyncCarousel(){
 }
 function vmSyncChip(){
   document.querySelectorAll('.variant-chip').forEach(c=>{
-    c.classList.toggle('active',parseInt(c.dataset.idx)===vmCurrentIndex);
+    if(c.dataset.idx!==undefined)c.classList.toggle('active',parseInt(c.dataset.idx)===vmCurrentIndex);
   });
   const nameEl=document.getElementById('vmSelectedName');
   if(nameEl)nameEl.textContent=vmCurrentProduct.variantes[vmCurrentIndex]||'';
 }
-
 function addVariantToCart(){
   if(!vmCurrentProduct)return;
   const p=vmCurrentProduct;
@@ -773,101 +589,62 @@ function addVariantToCart(){
   const ex=cart.find(i=>i.id===cartId);
   if(ex){ex.qty++;}
   else{cart.push({
-    id:cartId,
-    nombre:nombreConModelo,
-    categoria:p.categoria,
-    precio:p.precio,
-    emoji:p.emoji,
-    imagen_url:p.todas_imagenes[vmCurrentIndex]||p.imagen_url||'',
-    qty:1,
+    id:cartId,nombre:nombreConModelo,categoria:p.categoria,precio:p.precio,emoji:p.emoji,
+    imagen_url:p.todas_imagenes[vmCurrentIndex]||p.imagen_url||'',qty:1,
   });}
   saveCart();updateCartUI();
-  // No cierra — actualiza el botón con el contador del modelo actual
   vmUpdateConfirmBtn();
 }
 
-/* ── CARRITO ── */
-function filterCat(cat,btn){
-  document.querySelectorAll('.filter-tab').forEach(t=>t.classList.remove('active'));
-  btn.classList.add('active');renderProducts(cat);
-}
+/* ── Local: agregar producto simple desde la card ── */
 function addToCart(id){
   const p=productos.find(p=>p.id===id);if(!p)return;
   const ex=cart.find(i=>i.id===id);
-  ex?ex.qty++:cart.push({...p,qty:1});
+  ex?ex.qty++:cart.push({id:p.id,nombre:p.nombre,categoria:p.categoria,precio:p.precio,emoji:p.emoji,imagen_url:p.imagen_url||'',qty:1});
   saveCart();updateCartUI();
-  const btn=document.getElementById('btn-'+id);
-  if(btn)btn.outerHTML=cardBtnHTML(p);
+  refreshCardBtn(id);
 }
-function changeQty(id,d){
-  const item=cart.find(i=>i.id===id);if(!item)return;
-  item.qty+=d;
-  if(item.qty<=0)cart=cart.filter(i=>i.id!==id);
-  saveCart();updateCartUI();
-  // Refrescar botón de la card — para variantes extraer el id base (antes del __)
-  const baseId=id.includes('__')?id.split('__')[0]:id;
-  const p=productos.find(x=>x.id===baseId);
-  const btn=document.getElementById('btn-'+baseId);
-  if(btn&&p)btn.outerHTML=cardBtnHTML(p);
-  // Si el modal de variantes está abierto, refrescar su botón también
+
+/* Cuando app.js cambia cantidades desde el carrito, refrescar cards/modal */
+document.addEventListener('cart:changed',e=>{
+  refreshCardBtn(e.detail.id);
   if(vmCurrentProduct)vmUpdateConfirmBtn();
+});
+/* ESC cierra el modal de producto */
+document.addEventListener('keydown',e=>{ if(e.key==='Escape'&&isVmOpen())closeVariantsModal(); });
+
+/* ── ARRANQUE ── */
+function showError(){
+  document.getElementById('productsGrid').innerHTML=
+    `<div class="catalog-error">
+      <div class="emoji" aria-hidden="true">🦕</div>
+      <h3>No pudimos cargar el catálogo</h3>
+      <p>Revisá tu conexión y volvé a intentar, o escribinos y te pasamos todo por WhatsApp.</p>
+      <button class="btn-primary" onclick="window.location.reload()">Reintentar</button>
+      <div style="margin-top:14px;"><a class="btn-whatsapp" style="display:inline-flex;width:auto;padding:12px 22px;" href="https://wa.me/${WA}" target="_blank" rel="noopener noreferrer"><img src="wtsp.png" alt="" width="128" height="128">Escribinos por WhatsApp</a></div>
+    </div>`;
+  document.getElementById('resultsCount').textContent='';
 }
-function updateCartUI(){
-  const total=cart.reduce((s,i)=>s+i.precio*i.qty,0);
-  const count=cart.reduce((s,i)=>s+i.qty,0);
-  document.getElementById('cartTotal').textContent='$'+total.toLocaleString('es-AR');
-  const badge=document.getElementById('cartBadge');
-  badge.textContent=count;badge.style.display=count>0?'flex':'none';
-  const c=document.getElementById('cartItems');
-  if(!cart.length){c.innerHTML='<div class="cart-empty"><div class="cart-empty-emoji">🛒</div><p>Tu carrito está vacío</p></div>';return;}
-  c.innerHTML=cart.map(i=>`
-    <div class="cart-item">
-      <div class="cart-item-emoji ${bgMap[i.categoria]||''}">
-        ${i.imagen_url?`<img src="${i.imagen_url}" style="width:100%;height:100%;object-fit:cover;border-radius:10px;" onerror="this.style.display='none'">`:i.emoji||'📦'}
-      </div>
-      <div class="cart-item-info">
-        <div class="cart-item-name">${i.nombre}</div>
-        <div class="cart-item-price">$${(i.precio*i.qty).toLocaleString('es-AR')}</div>
-      </div>
-      <div class="cart-qty">
-        <button class="qty-btn" onclick="changeQty('${i.id}',-1)">−</button>
-        <span class="qty-num">${i.qty}</span>
-        <button class="qty-btn" onclick="changeQty('${i.id}',1)">+</button>
-      </div>
-    </div>`).join('');
-}
-function sendToWhatsApp(){
-  if(!cart.length)return;
-  const items=cart.map(i=>`• ${i.nombre} x${i.qty} — $${(i.precio*i.qty).toLocaleString('es-AR')}`).join('\n');
-  const total=cart.reduce((s,i)=>s+i.precio*i.qty,0);
-  window.open(`https://wa.me/${WA}?text=${encodeURIComponent('¡Hola Simo & Gena! 🦕 Quisiera hacer el siguiente pedido:\n\n'+items+'\n\n*Total estimado: $'+total.toLocaleString('es-AR')+'*\n\n¿Está disponible?')}`,'_blank');
-}
-function toggleCart(){
-  const o=document.getElementById('cartOverlay'),d=document.getElementById('cartDrawer');
-  const op=d.classList.contains('open');
-  o.classList.toggle('open',!op);d.classList.toggle('open',!op);
-  document.body.style.overflow=!op?'hidden':'';
-}
-function openCart(){document.getElementById('cartOverlay').classList.add('open');document.getElementById('cartDrawer').classList.add('open');document.body.style.overflow='hidden';}
-function toggleMobile(){document.getElementById('mobileMenu').classList.toggle('open');}
-function closeMobile(){document.getElementById('mobileMenu').classList.remove('open');}
-function observeFadeUps(){
-  const obs=new IntersectionObserver(entries=>{entries.forEach((e,i)=>{if(e.isIntersecting){setTimeout(()=>e.target.classList.add('visible'),i*55);obs.unobserve(e.target);}});},{threshold:.08});
-  document.querySelectorAll('.fade-up:not(.visible)').forEach(el=>obs.observe(el));
-}
+
 async function initFromURL(){
   document.getElementById('productsGrid').innerHTML=
-    '<div style="grid-column:1/-1;text-align:center;padding:60px 20px;color:#aaa;"><p style="font-size:1.5rem;margin-bottom:8px;">🦕</p><p style="font-weight:700;font-size:.9rem;">Cargando productos...</p></div>';
-  productos=await loadFromSheets();
+    '<div class="catalog-empty"><p style="font-size:1.5rem;margin-bottom:8px;">🦕</p><p>Cargando productos...</p></div>';
+  try{
+    productos=await loadFromSheets();
+  }catch(e){
+    console.error('No se pudo cargar el catálogo:',e);
+    showError();
+    return;
+  }
+  document.getElementById('searchInput').addEventListener('input',onSearchInput);
   const cat=new URLSearchParams(window.location.search).get('cat');
   if(cat){
-    const normalize=s=>s.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
+    const normalize=s=>s.normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase();
     const btn=[...document.querySelectorAll('.filter-tab')].find(b=>normalize(b.textContent).includes(normalize(cat)));
     if(btn){filterCat(cat,btn);return;}
   }
-  renderProducts('todos');
+  applyView();
 }
-updateCartUI();
 initFromURL();
 </script>
 </body>
