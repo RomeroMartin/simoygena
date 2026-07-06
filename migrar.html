@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Migración CSV → Firestore · Simo & Gena (uso interno)</title>
+<style>
+  body{font-family:system-ui,'Segoe UI',sans-serif;background:#f5f5f7;color:#222;max-width:900px;margin:0 auto;padding:24px;line-height:1.5;}
+  h1{font-size:1.4rem;} h2{font-size:1.05rem;margin-top:26px;}
+  .card{background:#fff;border:1px solid #e3e3e3;border-radius:12px;padding:18px 20px;margin-bottom:18px;}
+  label{display:block;font-weight:600;font-size:.85rem;margin:10px 0 4px;}
+  input{width:100%;padding:9px 12px;border:1.5px solid #ddd;border-radius:8px;font-size:.9rem;}
+  button{background:#3E9A85;color:#fff;border:none;border-radius:8px;padding:10px 18px;font-weight:700;cursor:pointer;font-size:.9rem;margin-top:12px;}
+  button:disabled{opacity:.5;cursor:not-allowed;}
+  button.secondary{background:#666;}
+  button.danger{background:#c0392b;}
+  .row{display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end;}
+  .row>div{flex:1;min-width:180px;}
+  #log{background:#1e1e1e;color:#c8e6c9;font-family:ui-monospace,Consolas,monospace;font-size:.8rem;padding:14px;border-radius:8px;height:260px;overflow:auto;white-space:pre-wrap;}
+  .muted{color:#777;font-size:.82rem;}
+  table{width:100%;border-collapse:collapse;font-size:.8rem;margin-top:10px;}
+  th,td{border:1px solid #e3e3e3;padding:5px 7px;text-align:left;vertical-align:top;}
+  th{background:#fafafa;}
+  .ok{color:#2e7d32;font-weight:700;} .err{color:#c0392b;font-weight:700;}
+  .badge{display:inline-block;background:#eee;border-radius:20px;padding:1px 8px;font-size:.72rem;margin:1px;}
+</style>
+</head>
+<body>
+  <h1>🦕 Migración de productos: Google Sheets → Firestore</h1>
+  <p class="muted">Herramienta interna de un solo uso. Lee el CSV publicado actual, lo transforma
+  al nuevo esquema y lo carga a la colección <code>productos</code>. Es <strong>idempotente</strong>:
+  usa el ID viejo como ID del documento, así que re-ejecutarla actualiza en vez de duplicar.</p>
+
+  <div class="card">
+    <h2>1) Iniciar sesión como administradora</h2>
+    <p class="muted">Escribir productos requiere estar logueada como admin (y tener el doc en <code>admins/{uid}</code>).</p>
+    <div class="row">
+      <div><label for="email">Email admin</label><input id="email" type="email" autocomplete="username" placeholder="simoygena@gmail.com"></div>
+      <div><label for="pass">Contraseña</label><input id="pass" type="password" autocomplete="current-password"></div>
+      <div style="flex:0 0 auto;">
+        <button id="btnLogin">Ingresar</button>
+        <button id="btnLogout" class="secondary" style="display:none;">Salir</button>
+      </div>
+    </div>
+    <p id="authState" class="muted" style="margin-top:10px;">No autenticada.</p>
+  </div>
+
+  <div class="card">
+    <h2>2) Opciones</h2>
+    <div class="row">
+      <div>
+        <label for="stockInicial">Stock inicial para modelos/productos CON stock</label>
+        <input id="stockInicial" type="number" value="1" min="0">
+        <p class="muted">Los modelos listados en <code>modelos_sin_stock</code> se cargan con stock 0.</p>
+      </div>
+    </div>
+    <button id="btnPreview" class="secondary" disabled>Previsualizar (sin escribir)</button>
+    <button id="btnMigrar" class="danger" disabled>Migrar a Firestore</button>
+  </div>
+
+  <div class="card">
+    <h2>Registro</h2>
+    <div id="log">(esperando…)</div>
+    <div id="preview"></div>
+  </div>
+
+<script type="module">
+import { db, auth } from './js/firebase-config.js';
+import { signInWithEmailAndPassword, signOut, onAuthStateChanged }
+  from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
+import { doc, setDoc, serverTimestamp, getDocs, collection }
+  from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+
+const SHEET_URL='https://docs.google.com/spreadsheets/d/e/2PACX-1vRCS92M63zJbW_4P9ZZ1eZhN_DUuXvM9FML4r8EknqR-vhJizGctrJncKmu5L55QvFALZCMleFGY6OL/pub?gid=0&single=true&output=csv';
+
+const $=id=>document.getElementById(id);
+const logEl=$('log');
+function log(msg,cls){ const line=cls?`[${cls.toUpperCase()}] ${msg}`:msg; logEl.textContent+='\n'+line; logEl.scrollTop=logEl.scrollHeight; }
+function clearLog(){ logEl.textContent=''; }
+
+/* ── Parser CSV robusto (comas, comillas escapadas, saltos de línea) ── */
+function parseCSV(text){
+  text=text.replace(/\r\n/g,'\n').replace(/\r/g,'\n');
+  const rows=[]; let cur='', row=[], inQ=false;
+  for(let i=0;i<text.length;i++){
+    const ch=text[i];
+    if(inQ){ if(ch==='"'){ if(text[i+1]==='"'){cur+='"';i++;} else inQ=false; } else cur+=ch; }
+    else{ if(ch==='"') inQ=true; else if(ch===',') { row.push(cur); cur=''; }
+      else if(ch==='\n'){ row.push(cur); rows.push(row); row=[]; cur=''; } else cur+=ch; }
+  }
+  if(cur.length||row.length){ row.push(cur); rows.push(row); }
+  return rows.map(r=>r.map(c=>c.trim())).filter(r=>r.some(c=>c!==''));
+}
+
+/* ── CSV viejo → productos nuevo esquema ── */
+function mapProductos(rows, stockInicial){
+  const headers=rows[0].map(h=>h.toLowerCase().trim());
+  const idx=n=>headers.indexOf(n);
+  const out=[];
+  for(const c of rows.slice(1)){
+    const nombre=c[idx('nombre')]||'';
+    if(!nombre) continue;
+    const imagenes=(c[idx('imagen_url')]||'').split(',').map(u=>u.trim()).filter(u=>u);
+    const modelosArr=(c[idx('modelos')]||'').split(',').map(v=>v.trim()).filter(v=>v);
+    const sinStock=new Set((c[idx('modelos_sin_stock')]||'').split(',').map(v=>v.trim().toLowerCase()).filter(v=>v));
+    const tieneVariantes=modelosArr.length>1;
+    const modelos=tieneVariantes
+      ? modelosArr.map(m=>({ nombre:m, stock: sinStock.has(m.toLowerCase())?0:stockInicial }))
+      : [];
+    const idViejo=(c[idx('id')]||'').toString().trim();
+    out.push({
+      _docId: idViejo || null,
+      nombre,
+      categoria: c[idx('categoria')]||'',
+      precio: parseInt((c[idx('precio')]||'0').replace(/\D/g,''))||0,
+      descripcion: c[idx('descripcion')]||'',
+      descripcion_larga: c[idx('descripcion_larga')]||'',
+      imagenes,
+      emoji: '',
+      tiene_variantes: tieneVariantes,
+      modelos,
+      stock: tieneVariantes ? 0 : stockInicial,
+      disponible: (c[idx('disponible')]||'').toUpperCase()==='TRUE',
+      destacado: false,
+      orden: parseInt(idViejo)||0,
+    });
+  }
+  return out;
+}
+
+async function fetchProductos(stockInicial){
+  log('Descargando CSV…');
+  const res=await fetch(SHEET_URL+'&t='+Date.now(),{cache:'no-store'});
+  if(!res.ok) throw new Error('No se pudo bajar el CSV (HTTP '+res.status+')');
+  const rows=parseCSV(await res.text());
+  const prods=mapProductos(rows, stockInicial);
+  log(`CSV OK: ${rows.length-1} filas → ${prods.length} productos válidos.`);
+  return prods;
+}
+
+function renderPreview(prods){
+  const rows=prods.slice(0,60).map(p=>`<tr>
+    <td>${p._docId||'(auto)'}</td>
+    <td>${p.nombre}</td>
+    <td>${p.categoria}</td>
+    <td>$${p.precio.toLocaleString('es-AR')}</td>
+    <td>${p.disponible?'✔️':'—'}</td>
+    <td>${p.tiene_variantes ? p.modelos.map(m=>`<span class="badge">${m.nombre}: ${m.stock}</span>`).join('') : ('stock '+p.stock)}</td>
+    <td>${p.imagenes.length} img</td>
+  </tr>`).join('');
+  $('preview').innerHTML=`<table><thead><tr><th>ID</th><th>Nombre</th><th>Categoría</th><th>Precio</th><th>Disp.</th><th>Stock/Modelos</th><th>Imágenes</th></tr></thead><tbody>${rows}</tbody></table>`;
+}
+
+/* ── AUTH ── */
+onAuthStateChanged(auth, user=>{
+  const logged=!!user;
+  $('btnLogout').style.display=logged?'inline-block':'none';
+  $('btnLogin').style.display=logged?'none':'inline-block';
+  $('btnPreview').disabled=false; // previsualizar no escribe: siempre disponible
+  $('btnMigrar').disabled=!logged;
+  $('authState').innerHTML = logged
+    ? `Autenticada como <strong>${user.email}</strong> (uid: ${user.uid})`
+    : 'No autenticada.';
+});
+
+$('btnLogin').onclick=async()=>{
+  try{ await signInWithEmailAndPassword(auth, $('email').value.trim(), $('pass').value); log('Sesión iniciada.','ok'); }
+  catch(e){ log('Error de login: '+e.message,'err'); }
+};
+$('btnLogout').onclick=()=>signOut(auth);
+
+$('btnPreview').onclick=async()=>{
+  clearLog(); $('preview').innerHTML='';
+  try{
+    const prods=await fetchProductos(parseInt($('stockInicial').value)||0);
+    renderPreview(prods);
+    log('Previsualización lista. Revisá la tabla. Si está OK, tocá "Migrar a Firestore".','ok');
+  }catch(e){ log(e.message,'err'); }
+};
+
+$('btnMigrar').onclick=async()=>{
+  if(!auth.currentUser){ log('Tenés que iniciar sesión primero.','err'); return; }
+  if(!confirm('¿Cargar/actualizar todos los productos en Firestore?')) return;
+  clearLog();
+  try{
+    const prods=await fetchProductos(parseInt($('stockInicial').value)||0);
+    let ok=0, fail=0;
+    for(const p of prods){
+      const {_docId, ...data}=p;
+      try{
+        const ref=_docId ? doc(db,'productos',_docId) : doc(collection(db,'productos'));
+        await setDoc(ref, { ...data, creado:serverTimestamp(), actualizado:serverTimestamp() }, { merge:true });
+        ok++; log(`✔️ ${p.nombre}`);
+      }catch(e){ fail++; log(`❌ ${p.nombre}: ${e.message}`,'err'); }
+    }
+    log(`\nMIGRACIÓN TERMINADA — ${ok} ok, ${fail} con error.`, fail?'err':'ok');
+    // Verificación
+    const snap=await getDocs(collection(db,'productos'));
+    log(`Verificación: la colección "productos" tiene ahora ${snap.size} documentos.`);
+  }catch(e){ log(e.message,'err'); }
+};
+
+log('Listo. Iniciá sesión y previsualizá.');
+</script>
+</body>
+</html>

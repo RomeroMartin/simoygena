@@ -1,3 +1,7 @@
+> ⚠️ **DEPRECADO.** La planilla de Google Sheets fue reemplazada por Firebase (Firestore).
+> Los productos ahora se cargan desde el panel de administración: ver **[MANUAL-ADMIN.md](MANUAL-ADMIN.md)**.
+> Este documento se conserva solo como referencia histórica.
+
 # 📋 Manual de la planilla — Simo & Gena Baby Store
 
 Esta guía explica cómo cargar y editar productos desde la **planilla de Google Sheets**
