@@ -12,8 +12,11 @@ Frontend puro (HTML + CSS + JavaScript vanilla, **sin frameworks ni bundlers**) 
 El catálogo lee los productos **en vivo** desde Firestore y los pedidos se cierran por
 **WhatsApp**. El formulario de contacto usa **Formspree**.
 
-> **Estado:** Fase 1 completa (catálogo desde Firestore + panel de administración).
-> Fase 2 (cuentas de cliente + carrito persistente + pedidos) pendiente.
+> **Estado:** Fases 1 y 2 completas.
+> - **Fase 1:** catálogo desde Firestore + panel de administración (productos, stock, config).
+> - **Fase 2:** cuentas de cliente (login unificado; los admin ven el acceso al panel en la
+>   propia barra), carrito persistente por cuenta, pedidos guardados en Firestore + cierre por
+>   WhatsApp con código de pedido, historial del cliente, y gestión de pedidos/clientes en el admin.
 
 ---
 
@@ -22,21 +25,27 @@ El catálogo lee los productos **en vivo** desde Firestore y los pedidos se cier
 ```
 index.html            Home (hero, categorías, contacto)
 catalogo.html         Catálogo público (buscador, filtros, orden, carrito, modales)
+cuenta.html           Cuenta del cliente (registro, login, perfil, historial de pedidos)
 migrar.html           Herramienta interna de un solo uso: migra el CSV viejo → Firestore
 /admin
   index.html          Login del panel
-  panel.html          Panel: productos, stock, datos de la tienda
+  panel.html          Panel: productos, stock, pedidos, clientes, datos de la tienda
 /css
-  styles.css          Estilos compartidos (navbar, carrito, footer, tokens de color)
+  styles.css          Estilos compartidos (navbar, carrito, sesión, checkout, footer, tokens)
   home.css            Estilos del index
   catalogo.css        Estilos del catálogo
+  cuenta.css          Estilos de la cuenta del cliente
   admin.css           Estilos del panel
 /js
   firebase-config.js  Init de Firebase + export de db (Firestore) y auth
-  app.js              Lógica compartida (carrito localStorage, menú, utils, escapeHtml)
+  app.js              Lógica compartida (carrito localStorage, menú, utils, escapeHtml, setCart)
   catalogo.js         Catálogo desde Firestore + render + filtros + modales (módulo ES)
   home.js             Contador de productos del home desde Firestore (módulo ES)
-  admin.js            Login + CRUD de productos + stock + config (módulo ES)
+  auth-ui.js          Estado de sesión en la navbar (Ingresar / Mi cuenta / acceso admin)
+  cart-sync.js        Carrito persistente por cuenta (Firestore) + merge con localStorage
+  checkout.js         Confirmación de pedido: crea el pedido en Firestore + WhatsApp
+  cuenta.js           Registro / login / perfil / historial de pedidos del cliente
+  admin.js            Login + CRUD productos + stock + config + pedidos + clientes (módulo ES)
 /assets               Logos, favicon, og-image, personajes (Trixi/Rex), íconos
 firestore.rules       Reglas de seguridad de Firestore
 sitemap.xml / robots.txt   SEO
