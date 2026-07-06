@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Panel · Simo & Gena Baby Store</title>
+<link rel="icon" type="image/png" href="../assets/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/admin.css">
+</head>
+<body>
+  <div class="login-wrap">
+    <div class="login-card">
+      <img src="../assets/logo_completo.svg" alt="Simo & Gena Baby Store">
+      <h1>Panel de administración</h1>
+      <p class="sub">Ingresá con tu cuenta de administradora</p>
+      <form id="loginForm" novalidate>
+        <label for="email">Email</label>
+        <input id="email" type="email" autocomplete="username" placeholder="simoygena@gmail.com" required>
+        <label for="pass">Contraseña</label>
+        <input id="pass" type="password" autocomplete="current-password" required>
+        <div id="loginMsg" class="msg error"></div>
+        <button type="submit" class="btn full" id="loginBtn" style="margin-top:18px;">Ingresar</button>
+      </form>
+      <p style="margin-top:16px;"><a href="#" id="resetLink" style="font-size:.82rem;">¿Olvidaste tu contraseña?</a></p>
+      <p style="margin-top:20px;"><a href="../index.html" style="font-size:.8rem;color:#999;">← Volver a la tienda</a></p>
+    </div>
+  </div>
+  <script type="module" src="../js/admin.js"></script>
+</body>
+</html>

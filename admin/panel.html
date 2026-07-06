@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Panel · Simo & Gena Baby Store</title>
+<link rel="icon" type="image/png" href="../assets/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/admin.css">
+</head>
+<body>
+<div id="panelRoot" style="display:none;">
+  <header class="topbar">
+    <div class="brand"><img src="../assets/logo.svg" alt="">Panel Simo & Gena</div>
+    <div class="user">
+      <span id="userEmail"></span>
+      <a href="../index.html" class="btn ghost sm" target="_blank">Ver tienda ↗</a>
+      <button class="btn secondary sm" id="logoutBtn">Cerrar sesión</button>
+    </div>
+  </header>
+
+  <nav class="tabs">
+    <button class="tab-btn active" data-tab="productos">📦 Productos</button>
+    <button class="tab-btn" data-tab="stock">📊 Stock</button>
+    <button class="tab-btn" data-tab="config">⚙️ Datos de la tienda</button>
+  </nav>
+
+  <main class="wrap">
+    <!-- ── PRODUCTOS ── -->
+    <section class="panel-tab active" id="tab-productos">
+      <div class="toolbar">
+        <input type="search" class="search" id="prodSearch" placeholder="Buscar producto…" aria-label="Buscar">
+        <button class="btn" id="btnNuevo">+ Nuevo producto</button>
+      </div>
+      <p class="count-note" id="prodCount"></p>
+      <div class="table-card">
+        <table>
+          <thead>
+            <tr>
+              <th></th><th>Nombre</th><th class="hide-sm">Categoría</th><th>Precio</th>
+              <th class="hide-sm">Stock</th><th>Visible</th><th class="hide-sm">Destacado</th><th></th>
+            </tr>
+          </thead>
+          <tbody id="prodBody"><tr><td colspan="8" class="loading">Cargando…</td></tr></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ── STOCK ── -->
+    <section class="panel-tab" id="tab-stock">
+      <div class="toolbar">
+        <input type="search" class="search" id="stockSearch" placeholder="Buscar producto…" aria-label="Buscar">
+        <span class="count-note">Editá el stock y se guarda al salir del campo. 🔴 = 0 · 🟠 = 3 o menos</span>
+      </div>
+      <div class="table-card">
+        <table>
+          <thead><tr><th>Producto</th><th>Modelo</th><th>Stock</th></tr></thead>
+          <tbody id="stockBody"><tr><td colspan="3" class="loading">Cargando…</td></tr></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ── CONFIG ── -->
+    <section class="panel-tab" id="tab-config">
+      <div class="table-card" style="padding:22px;max-width:560px;">
+        <h2 style="margin-bottom:4px;">Datos de contacto de la tienda</h2>
+        <p class="hint" style="margin-bottom:12px;">Se usan en la web pública. Editables sin tocar código.</p>
+        <label for="cfgWhatsapp">WhatsApp (con código país, sin + ni espacios)</label>
+        <input id="cfgWhatsapp" placeholder="5492213997535">
+        <label for="cfgInstagram">Instagram (URL)</label>
+        <input id="cfgInstagram" placeholder="https://instagram.com/simoygena">
+        <label for="cfgEmail">Email</label>
+        <input id="cfgEmail" placeholder="simoygena@gmail.com">
+        <label for="cfgEnvio">Texto de envíos (zonas / costos)</label>
+        <textarea id="cfgEnvio" placeholder="Envíos a todo La Plata. Retiro coordinado por WhatsApp…"></textarea>
+        <div id="cfgMsg" class="msg"></div>
+        <button class="btn" id="btnGuardarConfig" style="margin-top:16px;">Guardar datos</button>
+      </div>
+    </section>
+  </main>
+</div>
+
+<!-- ── MODAL FORM PRODUCTO ── -->
+<div class="overlay" id="prodOverlay">
+  <div class="modal">
+    <h2 id="modalTitle">Nuevo producto</h2>
+    <form id="prodForm" novalidate>
+      <input type="hidden" id="pId">
+      <label for="pNombre">Nombre *</label>
+      <input id="pNombre" required>
+      <div class="grid2">
+        <div>
+          <label for="pCategoria">Categoría *</label>
+          <select id="pCategoria" required>
+            <option value="">Elegí…</option>
+            <option>Indumentaria</option>
+            <option>Blanqueria</option>
+            <option>Accesorios</option>
+            <option>Sensorial</option>
+          </select>
+        </div>
+        <div>
+          <label for="pPrecio">Precio (solo número) *</label>
+          <input id="pPrecio" type="number" min="0" step="1" required>
+        </div>
+      </div>
+      <label for="pDesc">Descripción corta (para la tarjeta) *</label>
+      <input id="pDesc" required>
+      <label for="pDescLarga">Descripción larga (opcional, para el detalle)</label>
+      <textarea id="pDescLarga"></textarea>
+      <label for="pImagenes">Imágenes — una URL por línea (Google Drive o directa)</label>
+      <textarea id="pImagenes" placeholder="https://drive.google.com/file/d/XXXX/view"></textarea>
+      <p class="hint">Si hay modelos, poné una imagen por modelo, en el mismo orden.</p>
+
+      <label style="display:flex;align-items:center;gap:8px;margin-top:14px;">
+        <input type="checkbox" id="pTieneVariantes" style="width:auto;"> Este producto tiene modelos / variantes
+      </label>
+
+      <div id="stockSimpleBox">
+        <label for="pStock">Stock (unidades)</label>
+        <input id="pStock" type="number" min="0" step="1" value="1" style="max-width:160px;">
+      </div>
+
+      <div id="variantesBox" class="variantes-box" style="display:none;">
+        <div id="variantesRows"></div>
+        <button type="button" class="btn ghost sm" id="btnAddVariante">+ Agregar modelo</button>
+        <p class="hint">Cada modelo con su stock. Stock 0 = se muestra "Sin stock" en la web.</p>
+      </div>
+
+      <div class="grid2" style="margin-top:14px;">
+        <label style="display:flex;align-items:center;gap:8px;"><input type="checkbox" id="pDisponible" style="width:auto;" checked> Visible en la web</label>
+        <label style="display:flex;align-items:center;gap:8px;"><input type="checkbox" id="pDestacado" style="width:auto;"> Destacado</label>
+      </div>
+      <label for="pOrden">Orden (menor = aparece antes)</label>
+      <input id="pOrden" type="number" step="1" value="0" style="max-width:160px;">
+
+      <div id="formMsg" class="msg error"></div>
+      <div class="modal-actions">
+        <button type="button" class="btn ghost" id="btnCancelar">Cancelar</button>
+        <button type="submit" class="btn" id="btnGuardar">Guardar producto</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script type="module" src="../js/admin.js"></script>
+</body>
+</html>

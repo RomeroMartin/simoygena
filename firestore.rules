@@ -1,0 +1,79 @@
+rules_version = '2';
+/* ============================================================
+   SIMO & GENA · BABY STORE — Reglas de seguridad de Firestore
+   firestore.rules · Martin Romero Studio
+
+   Al no haber backend, estas reglas son la ÚNICA barrera de
+   seguridad. Probar cada una en el simulador de la consola
+   (Firestore → Reglas → Área de juegos) antes de dar por cerrada
+   la fase.
+   ============================================================ */
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    /* ¿El usuario autenticado es admin? (existe su doc en /admins) */
+    function esAdmin() {
+      return request.auth != null &&
+             exists(/databases/$(database)/documents/admins/$(request.auth.uid));
+    }
+
+    /* Categorías permitidas para productos */
+    function categoriaValida(cat) {
+      return cat in ['Indumentaria', 'Blanqueria', 'Accesorios', 'Sensorial'];
+    }
+
+    /* Validación básica de un producto (defensa en profundidad) */
+    function productoValido(d) {
+      return d.nombre is string && d.nombre.size() > 0 &&
+             categoriaValida(d.categoria) &&
+             d.precio is number && d.precio >= 0 &&
+             d.disponible is bool;
+    }
+
+    /* ── PRODUCTOS: lectura pública, escritura solo admin ── */
+    match /productos/{id} {
+      allow read: if true;
+      allow create, update: if esAdmin() && productoValido(request.resource.data);
+      allow delete: if esAdmin();
+    }
+
+    /* ── CONFIG: lectura pública, escritura solo admin ── */
+    match /config/{id} {
+      allow read: if true;
+      allow write: if esAdmin();
+    }
+
+    /* ── ADMINS: solo se lee para verificar rol; nunca se escribe
+         desde el frontend (se edita a mano desde la consola). ── */
+    match /admins/{uid} {
+      allow read: if request.auth != null;
+      allow write: if false;
+    }
+
+    /* ── CLIENTES: cada cliente solo su propio doc; admin lee todos ── */
+    match /clientes/{uid} {
+      allow read:          if request.auth != null && (request.auth.uid == uid || esAdmin());
+      allow create, update: if request.auth != null && request.auth.uid == uid;
+      allow delete:        if esAdmin();
+    }
+
+    /* ── CARRITOS: cada cliente solo su propio carrito (docId == uid) ── */
+    match /carritos/{uid} {
+      allow read, write: if request.auth != null && request.auth.uid == uid;
+    }
+
+    /* ── PEDIDOS ──
+         crear   → cliente autenticado creando un pedido a su nombre
+         leer    → el propio cliente o un admin
+         estado  → solo admin (update/delete) ── */
+    match /pedidos/{id} {
+      allow create: if request.auth != null &&
+                       request.resource.data.clienteUid == request.auth.uid &&
+                       request.resource.data.total is number &&
+                       request.resource.data.estado == 'pendiente';
+      allow read:   if request.auth != null &&
+                       (resource.data.clienteUid == request.auth.uid || esAdmin());
+      allow update, delete: if esAdmin();
+    }
+  }
+}
