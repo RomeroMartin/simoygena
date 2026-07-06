@@ -430,6 +430,11 @@ document.addEventListener('cart:changed', e => {
   refreshCardBtn(e.detail.id);
   if (vmCurrentProduct) vmUpdateConfirmBtn();
 });
+/* El carrito fue reemplazado por completo (login/logout con cuenta) → re-render */
+document.addEventListener('cart:replaced', () => {
+  if (productos.length) applyView();
+  if (vmCurrentProduct) vmUpdateConfirmBtn();
+});
 /* ESC cierra el modal de producto */
 document.addEventListener('keydown', e => { if (e.key === 'Escape' && isVmOpen()) closeVariantsModal(); });
 

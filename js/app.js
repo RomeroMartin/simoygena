@@ -21,7 +21,18 @@ function escapeHtml(str){
 
 /* ── CARRITO (compartido entre páginas vía localStorage) ── */
 let cart = JSON.parse(localStorage.getItem('sg_cart') || '[]');
-function saveCart(){ localStorage.setItem('sg_cart', JSON.stringify(cart)); }
+function saveCart(){
+  localStorage.setItem('sg_cart', JSON.stringify(cart));
+  // Aviso para que la sincronización con la cuenta (cart-sync.js) persista en Firestore
+  document.dispatchEvent(new CustomEvent('cart:saved'));
+}
+/* Reemplaza el carrito completo. Lo usa cart-sync.js al iniciar/cerrar
+   sesión (fusión con la cuenta). Refresca localStorage + UI. */
+function setCart(newCart){
+  cart = Array.isArray(newCart) ? newCart : [];
+  saveCart();
+  updateCartUI();
+}
 
 function updateCartUI(){
   const total = cart.reduce((s,i) => s + i.precio * i.qty, 0);

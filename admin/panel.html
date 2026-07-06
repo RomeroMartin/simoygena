@@ -25,6 +25,8 @@
   <nav class="tabs">
     <button class="tab-btn active" data-tab="productos">📦 Productos</button>
     <button class="tab-btn" data-tab="stock">📊 Stock</button>
+    <button class="tab-btn" data-tab="pedidos">🧾 Pedidos</button>
+    <button class="tab-btn" data-tab="clientes">👥 Clientes</button>
     <button class="tab-btn" data-tab="config">⚙️ Datos de la tienda</button>
   </nav>
 
@@ -59,6 +61,43 @@
         <table>
           <thead><tr><th>Producto</th><th>Modelo</th><th>Stock</th></tr></thead>
           <tbody id="stockBody"><tr><td colspan="3" class="loading">Cargando…</td></tr></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ── PEDIDOS ── -->
+    <section class="panel-tab" id="tab-pedidos">
+      <div class="toolbar">
+        <input type="search" class="search" id="pedSearch" placeholder="Buscar por código, cliente o email…" aria-label="Buscar pedido">
+        <select id="pedEstadoFilter" style="max-width:210px;">
+          <option value="">Todos los estados</option>
+          <option value="pendiente">Pendiente</option>
+          <option value="contactado">Contactado</option>
+          <option value="pagado">Pagado</option>
+          <option value="enviado">Enviado</option>
+          <option value="entregado">Entregado</option>
+          <option value="cancelado">Cancelado</option>
+        </select>
+      </div>
+      <p class="count-note" id="pedCount"></p>
+      <div class="table-card">
+        <table>
+          <thead><tr><th>Código</th><th>Cliente</th><th class="hide-sm">Fecha</th><th>Total</th><th>Estado</th><th></th></tr></thead>
+          <tbody id="pedBody"><tr><td colspan="6" class="loading">Cargando…</td></tr></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ── CLIENTES ── -->
+    <section class="panel-tab" id="tab-clientes">
+      <div class="toolbar">
+        <input type="search" class="search" id="cliSearch" placeholder="Buscar cliente…" aria-label="Buscar cliente">
+      </div>
+      <p class="count-note" id="cliCount"></p>
+      <div class="table-card">
+        <table>
+          <thead><tr><th>Nombre</th><th class="hide-sm">Email</th><th>Teléfono</th><th class="hide-sm">Ciudad</th><th>Pedidos</th><th></th></tr></thead>
+          <tbody id="cliBody"><tr><td colspan="6" class="loading">Cargando…</td></tr></tbody>
         </table>
       </div>
     </section>

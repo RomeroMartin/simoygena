@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Mi cuenta · Simo & Gena Baby Store</title>
+<link rel="icon" type="image/png" href="assets/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+<link rel="stylesheet" href="css/cuenta.css">
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="navbar-inner">
+    <div class="nav-logo">
+      <a href="index.html" aria-label="Simo & Gena — Inicio"><img src="assets/logo.svg" alt="Simo & Gena Baby Store" width="140" height="40"></a>
+    </div>
+    <div class="nav-right">
+      <ul class="nav-links">
+        <li><a href="index.html">Inicio</a></li>
+        <li><a href="catalogo.html">Catálogo</a></li>
+        <li><a href="index.html#contacto">Contacto</a></li>
+      </ul>
+      <div class="nav-actions">
+        <div class="nav-account" id="navAccount"></div>
+        <button class="hamburger" onclick="toggleMobile()" aria-label="Abrir menú" aria-expanded="false" aria-controls="mobileMenu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="index.html" onclick="closeMobile()">Inicio</a>
+    <a href="catalogo.html" onclick="closeMobile()">Catálogo</a>
+    <a href="index.html#contacto" onclick="closeMobile()">Contacto</a>
+    <div id="mobileAccount"></div>
+  </div>
+</nav>
+
+<main class="cuenta-main">
+
+  <!-- ── NO LOGUEADO: login / registro ── -->
+  <section class="cuenta-card" id="authSection" style="display:none;">
+    <div class="auth-tabs">
+      <button class="auth-tab active" id="tabLogin">Ingresar</button>
+      <button class="auth-tab" id="tabRegister">Crear cuenta</button>
+    </div>
+
+    <!-- LOGIN -->
+    <form class="auth-form active" id="loginForm" novalidate>
+      <h1 class="cuenta-title">Bienvenida de nuevo</h1>
+      <p class="cuenta-sub">Ingresá para ver tus pedidos y tener tu carrito guardado.</p>
+      <label for="lEmail">Email</label>
+      <input id="lEmail" type="email" autocomplete="username" required>
+      <label for="lPass">Contraseña</label>
+      <input id="lPass" type="password" autocomplete="current-password" required>
+      <div id="loginMsg" class="msg"></div>
+      <button type="submit" class="btn-cuenta" id="loginBtn">Ingresar</button>
+      <div><button type="button" class="link-btn" id="resetLink">¿Olvidaste tu contraseña?</button></div>
+    </form>
+
+    <!-- REGISTRO -->
+    <form class="auth-form" id="registerForm" novalidate>
+      <h1 class="cuenta-title">Crear tu cuenta</h1>
+      <p class="cuenta-sub">Guardá tus datos y tu carrito, y seguí el estado de tus pedidos.</p>
+      <label for="rNombre">Nombre y apellido</label>
+      <input id="rNombre" type="text" autocomplete="name" required>
+      <div class="grid2">
+        <div>
+          <label for="rEmail">Email</label>
+          <input id="rEmail" type="email" autocomplete="email" required>
+        </div>
+        <div>
+          <label for="rTel">Teléfono / WhatsApp</label>
+          <input id="rTel" type="tel" autocomplete="tel">
+        </div>
+      </div>
+      <label for="rPass">Contraseña (mínimo 6 caracteres)</label>
+      <input id="rPass" type="password" autocomplete="new-password" required>
+      <div id="registerMsg" class="msg"></div>
+      <button type="submit" class="btn-cuenta" id="registerBtn">Crear cuenta</button>
+    </form>
+  </section>
+
+  <!-- ── LOGUEADO: perfil + pedidos ── -->
+  <section id="accountSection" style="display:none;">
+    <div class="cuenta-card">
+      <p class="account-greeting" id="greeting">Hola 👋</p>
+      <p class="account-email" id="accEmail"></p>
+
+      <hr class="section-sep">
+      <p class="block-title">Mis datos</p>
+      <form id="profileForm" novalidate>
+        <label for="pNombre">Nombre y apellido</label>
+        <input id="pNombre" type="text" autocomplete="name">
+        <label for="pTel">Teléfono / WhatsApp</label>
+        <input id="pTel" type="tel" autocomplete="tel">
+        <div class="grid2">
+          <div><label for="pCalle">Calle</label><input id="pCalle" type="text"></div>
+          <div><label for="pNumero">Número</label><input id="pNumero" type="text"></div>
+        </div>
+        <div class="grid2">
+          <div><label for="pCiudad">Ciudad</label><input id="pCiudad" type="text"></div>
+          <div><label for="pCp">Código postal</label><input id="pCp" type="text"></div>
+        </div>
+        <label for="pProvincia">Provincia</label>
+        <input id="pProvincia" type="text">
+        <label for="pNotas">Notas para la entrega (opcional)</label>
+        <textarea id="pNotas"></textarea>
+        <div id="profileMsg" class="msg"></div>
+        <button type="submit" class="btn-cuenta" id="profileBtn">Guardar mis datos</button>
+      </form>
+    </div>
+
+    <div class="cuenta-card" id="pedidos" style="margin-top:18px;">
+      <p class="block-title">🧾 Mis pedidos</p>
+      <div id="pedidosBox">
+        <div class="pedidos-empty">Todavía no tenés pedidos. Cuando hagas uno, va a aparecer acá.</div>
+      </div>
+    </div>
+
+    <div class="btn-logout-line">
+      <button class="link-btn" id="logoutBtn2" style="color:#c0392b;">Cerrar sesión</button>
+    </div>
+  </section>
+
+  <div id="cuentaLoading" class="pedidos-empty" style="margin-top:120px;">Cargando…</div>
+</main>
+
+<script src="js/app.js"></script>
+<script type="module" src="js/auth-ui.js"></script>
+<script type="module" src="js/cart-sync.js"></script>
+<script type="module" src="js/cuenta.js"></script>
+</body>
+</html>

@@ -1,0 +1,50 @@
+/* ============================================================
+   SIMO & GENA · BABY STORE — Estilos de la página de cuenta
+   css/cuenta.css · Martin Romero Studio
+   (usa los tokens y la navbar de styles.css)
+   ============================================================ */
+
+.cuenta-main{max-width:560px;margin:0 auto;padding:120px 20px 70px;min-height:72vh;}
+.cuenta-card{background:#fff;border:1.5px solid #f0efeb;border-radius:22px;padding:30px 28px;box-shadow:0 8px 40px rgba(0,0,0,.05);}
+.cuenta-title{font-size:1.4rem;font-weight:900;color:#2d2d2d;margin-bottom:4px;}
+.cuenta-sub{color:#666;font-size:.9rem;margin-bottom:20px;line-height:1.5;}
+
+.auth-tabs{display:flex;gap:5px;background:#f4f5f7;border-radius:50px;padding:4px;margin-bottom:22px;}
+.auth-tab{flex:1;border:none;background:none;padding:10px;border-radius:50px;font-family:inherit;font-weight:800;font-size:.88rem;color:#666;cursor:pointer;transition:all .2s;}
+.auth-tab.active{background:#fff;color:var(--turquesa-ink);box-shadow:0 2px 8px rgba(0,0,0,.06);}
+
+.auth-form{display:none;}
+.auth-form.active{display:block;}
+
+.cuenta-card label{display:block;font-weight:800;font-size:.74rem;color:#555;margin:12px 0 5px;text-transform:uppercase;letter-spacing:.4px;}
+.cuenta-card input,.cuenta-card textarea{width:100%;padding:11px 14px;border:1.5px solid #e8e8e8;border-radius:12px;font-family:inherit;font-size:.9rem;color:#333;background:#FDFCF8;outline:none;transition:border-color .2s;}
+.cuenta-card input:focus,.cuenta-card textarea:focus{border-color:var(--turquesa);background:#fff;}
+.cuenta-card textarea{resize:vertical;min-height:64px;}
+
+.btn-cuenta{width:100%;background:var(--turquesa);color:#fff;border:none;border-radius:50px;padding:13px;font-family:inherit;font-weight:900;font-size:.92rem;cursor:pointer;margin-top:20px;transition:background .2s,transform .15s;}
+.btn-cuenta:hover{background:var(--turquesa-hover);transform:translateY(-1px);}
+.btn-cuenta:disabled{opacity:.6;cursor:not-allowed;transform:none;}
+.link-btn{background:none;border:none;color:var(--turquesa-ink);font-weight:700;font-size:.82rem;cursor:pointer;text-decoration:underline;margin-top:14px;font-family:inherit;padding:0;display:inline-block;}
+
+.msg{font-size:.82rem;font-weight:700;padding:10px 14px;border-radius:10px;margin-top:14px;display:none;line-height:1.4;}
+.msg.show{display:block;}
+.msg.error{background:#fff0f0;color:#c0392b;border:1.5px solid #ffd0d0;}
+.msg.ok{background:#eefaef;color:#2e7d32;border:1.5px solid #c9ebcd;}
+
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.section-sep{margin:26px 0 18px;border:none;border-top:1px solid #f0f0f0;}
+.account-greeting{font-size:1.4rem;font-weight:900;color:#2d2d2d;margin-bottom:2px;}
+.account-email{color:#888;font-size:.85rem;margin-bottom:6px;}
+.block-title{font-family:'Nunito',sans-serif;font-weight:900;font-size:1.02rem;color:#2d2d2d;margin:4px 0 10px;}
+
+.pedidos-empty{color:#888;font-size:.88rem;padding:16px;background:#faf9f6;border-radius:12px;text-align:center;}
+.pedido-item{border:1.5px solid #f0efeb;border-radius:14px;padding:14px 16px;margin-bottom:10px;}
+.pedido-top{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:6px;}
+.pedido-id{font-weight:800;font-size:.8rem;color:#555;}
+.pedido-estado{font-size:.68rem;font-weight:800;padding:3px 10px;border-radius:20px;text-transform:uppercase;letter-spacing:.3px;background:#eef;color:#556;}
+.pedido-fecha{font-size:.76rem;color:#999;}
+.pedido-items{font-size:.82rem;color:#666;line-height:1.5;}
+.pedido-total{font-weight:900;color:var(--turquesa-ink);margin-top:6px;}
+
+.btn-logout-line{margin-top:20px;text-align:center;}
+@media(max-width:520px){.grid2{grid-template-columns:1fr;}}

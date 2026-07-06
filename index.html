@@ -66,6 +66,7 @@
         <li><a href="#contacto">Contacto</a></li>
       </ul>
       <div class="nav-actions">
+        <div class="nav-account" id="navAccount"></div>
         <button class="cart-icon-btn" onclick="toggleCart()" aria-label="Abrir carrito">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
           <span class="cart-badge" id="cartBadge">0</span>
@@ -80,6 +81,7 @@
     <a href="#inicio" onclick="closeMobile()">Inicio</a>
     <a href="catalogo.html" onclick="closeMobile()">Catálogo</a>
     <a href="#contacto" onclick="closeMobile()">Contacto</a>
+    <div id="mobileAccount"></div>
   </div>
 </nav>
 
@@ -317,7 +319,7 @@
       <span class="cart-total-label">Total estimado:</span>
       <span class="cart-total-price" id="cartTotal">$0</span>
     </div>
-    <button class="btn-whatsapp" onclick="sendToWhatsApp()">
+    <button class="btn-whatsapp" onclick="checkout()">
       <img src="assets/wtsp.png" alt="" width="128" height="128">
       Enviar pedido por WhatsApp
     </button>
@@ -325,6 +327,9 @@
 </div>
 
 <script src="js/app.js"></script>
+<script type="module" src="js/auth-ui.js"></script>
+<script type="module" src="js/cart-sync.js"></script>
+<script type="module" src="js/checkout.js"></script>
 <script>
 /* ── FORMULARIO DE CONTACTO (Formspree) ──────────────────────
    Para cambiar el destino: crear un form en formspree.io y

@@ -139,11 +139,15 @@ function wireTabs(){
       document.querySelectorAll('.tab-btn').forEach(x=>x.classList.toggle('active',x===b));
       document.querySelectorAll('.panel-tab').forEach(s=>s.classList.toggle('active', s.id==='tab-'+currentTab));
       if(currentTab==='stock') renderStock();
+      if(currentTab==='pedidos' || currentTab==='clientes') cargarPedidosYClientes();
     };
   });
   $('prodSearch').addEventListener('input', renderProductos);
   $('stockSearch').addEventListener('input', renderStock);
   $('btnNuevo').onclick=()=>openForm(null);
+  $('pedSearch').addEventListener('input', renderPedidos);
+  $('pedEstadoFilter').addEventListener('change', renderPedidos);
+  $('cliSearch').addEventListener('input', renderClientes);
 }
 
 async function cargarProductos(){
@@ -401,6 +405,169 @@ async function guardarConfig(){
   };
   try{ await setDoc(doc(db,'config','general'), data, {merge:true}); showMsg(msg,'Datos guardados.',true); }
   catch(e){ showMsg(msg,'No se pudo guardar: '+e.message,false); }
+}
+
+/* ============================================================
+   TAB PEDIDOS + CLIENTES
+   ============================================================ */
+let pedidos=[], clientes=[], ordersLoaded=false;
+
+const EST_PED = {
+  pendiente:  { l:'Pendiente',  bg:'#fff3df', c:'#c77700' },
+  contactado: { l:'Contactado', bg:'#eef1ff', c:'#4557b5' },
+  pagado:     { l:'Pagado',     bg:'#e8f5ec', c:'#2e7d32' },
+  enviado:    { l:'Enviado',    bg:'#e6f6f2', c:'#2c7a68' },
+  entregado:  { l:'Entregado',  bg:'#e5f5ec', c:'#2e7d32' },
+  cancelado:  { l:'Cancelado',  bg:'#fdecea', c:'#c0392b' },
+};
+const EST_ORDER = ['pendiente','contactado','pagado','enviado','entregado','cancelado'];
+
+function fechaPed(ts){
+  try{ const d = ts?.toDate ? ts.toDate() : null;
+    return d ? d.toLocaleDateString('es-AR',{day:'2-digit',month:'2-digit',year:'numeric'}) + ' ' + d.toLocaleTimeString('es-AR',{hour:'2-digit',minute:'2-digit'}) : '';
+  }catch(e){ return ''; }
+}
+/* Normaliza un teléfono argentino a formato wa.me */
+function waLink(tel){
+  let t = String(tel||'').replace(/\D/g,'');
+  if(!t) return null;
+  if(!t.startsWith('54')) t = '549' + t;
+  return t;
+}
+
+/* Overlay genérico para modales de detalle (usa .overlay/.modal de admin.css) */
+function openOverlay(innerHTML){
+  let ov=document.getElementById('genOverlay');
+  if(!ov){
+    ov=document.createElement('div'); ov.id='genOverlay'; ov.className='overlay'; ov.style.zIndex='55';
+    document.body.appendChild(ov);
+    ov.addEventListener('click', e=>{ if(e.target===ov) closeOverlay(); });
+  }
+  ov.innerHTML=`<div class="modal" style="max-width:520px;margin:auto;">${innerHTML}</div>`;
+  ov.classList.add('open');
+  ov.querySelectorAll('[data-close-ov]').forEach(b=>b.onclick=closeOverlay);
+}
+function closeOverlay(){ const ov=document.getElementById('genOverlay'); if(ov){ ov.classList.remove('open'); ov.innerHTML=''; } }
+
+async function cargarPedidosYClientes(){
+  if(ordersLoaded){ renderPedidos(); renderClientes(); return; }
+  try{
+    const [ps, cs] = await Promise.all([ getDocs(collection(db,'pedidos')), getDocs(collection(db,'clientes')) ]);
+    pedidos=[]; ps.forEach(d=>pedidos.push({ id:d.id, ...d.data() }));
+    pedidos.sort((a,b)=>(b.creado?.seconds||0)-(a.creado?.seconds||0));
+    clientes=[]; cs.forEach(d=>clientes.push({ id:d.id, ...d.data() }));
+    ordersLoaded=true;
+    renderPedidos(); renderClientes();
+  }catch(e){
+    $('pedBody').innerHTML=`<tr><td colspan="6" class="loading">No se pudieron cargar los pedidos: ${esc(e.message)}</td></tr>`;
+    $('cliBody').innerHTML=`<tr><td colspan="6" class="loading">No se pudieron cargar los clientes.</td></tr>`;
+  }
+}
+
+function renderPedidos(){
+  const q=($('pedSearch').value||'').trim().toLowerCase();
+  const est=$('pedEstadoFilter').value;
+  const list=pedidos.filter(p=>{
+    if(est && p.estado!==est) return false;
+    if(!q) return true;
+    const cod=p.id.slice(0,8).toLowerCase();
+    return cod.includes(q) || String(p.clienteNombre||'').toLowerCase().includes(q) || String(p.clienteEmail||'').toLowerCase().includes(q);
+  });
+  $('pedCount').textContent=`${list.length} de ${pedidos.length} pedidos`;
+  const body=$('pedBody');
+  if(!list.length){ body.innerHTML='<tr><td colspan="6" class="loading">Sin pedidos.</td></tr>'; return; }
+  body.innerHTML=list.map(p=>{
+    const options=EST_ORDER.map(e=>`<option value="${e}"${p.estado===e?' selected':''}>${EST_PED[e].l}</option>`).join('');
+    const wa=waLink(p.clienteTelefono);
+    const est=EST_PED[p.estado]||{bg:'#eee',c:'#666'};
+    return `<tr>
+      <td><strong>#${esc(p.id.slice(0,8).toUpperCase())}</strong></td>
+      <td>${esc(p.clienteNombre||'—')}<div class="hint">${esc(p.clienteEmail||'')}</div></td>
+      <td class="hide-sm">${fechaPed(p.creado)}</td>
+      <td>$${(Number(p.total)||0).toLocaleString('es-AR')}</td>
+      <td><select data-estado="${esc(p.id)}" style="border-color:${est.c};color:${est.c};font-weight:800;">${options}</select></td>
+      <td class="actions">
+        <button class="btn ghost sm" data-ver="${esc(p.id)}">Ver</button>
+        ${wa?`<a class="btn sm" style="background:#25D366;text-decoration:none;" target="_blank" rel="noopener" href="https://wa.me/${wa}?text=${encodeURIComponent('¡Hola '+(p.clienteNombre||'')+'! Sobre tu pedido #'+p.id.slice(0,8).toUpperCase()+' en Simo & Gena 🦕')}">WhatsApp</a>`:''}
+      </td>
+    </tr>`;
+  }).join('');
+  body.querySelectorAll('[data-estado]').forEach(sel=>sel.onchange=()=>cambiarEstado(sel.dataset.estado, sel.value));
+  body.querySelectorAll('[data-ver]').forEach(b=>b.onclick=()=>detallePedido(b.dataset.ver));
+}
+
+async function cambiarEstado(id, nuevo){
+  try{
+    await updateDoc(doc(db,'pedidos',id), { estado:nuevo, actualizado:serverTimestamp() });
+    const p=pedidos.find(x=>x.id===id); if(p) p.estado=nuevo;
+    renderPedidos();
+  }catch(e){ alert('No se pudo cambiar el estado: '+e.message); renderPedidos(); }
+}
+
+function detallePedido(id){
+  const p=pedidos.find(x=>x.id===id); if(!p) return;
+  const items=(p.items||[]).map(i=>`<div style="display:flex;justify-content:space-between;gap:8px;margin-bottom:4px;"><span>${esc(i.nombre)} ×${i.cantidad}</span><span>$${(Number(i.subtotal)||0).toLocaleString('es-AR')}</span></div>`).join('');
+  const d=p.direccionEnvio;
+  const dirTxt = (p.metodoEntrega==='envio' && d)
+    ? [ [d.calle,d.numero].filter(Boolean).join(' '), d.ciudad, d.cp&&('CP '+d.cp), d.provincia ].filter(Boolean).join(', ')
+    : 'Retiro coordinado';
+  const wa=waLink(p.clienteTelefono);
+  openOverlay(`
+    <h2>Pedido #${esc(p.id.slice(0,8).toUpperCase())}</h2>
+    <p class="hint" style="margin-bottom:12px;">${fechaPed(p.creado)}</p>
+    <div style="background:#faf9f6;border-radius:12px;padding:12px 14px;font-size:.86rem;">
+      ${items}
+      <div style="display:flex;justify-content:space-between;font-weight:900;color:var(--turquesa-ink);border-top:1px solid #eee;margin-top:6px;padding-top:6px;"><span>Total</span><span>$${(Number(p.total)||0).toLocaleString('es-AR')}</span></div>
+    </div>
+    <p style="margin-top:14px;font-size:.88rem;"><strong>Cliente:</strong> ${esc(p.clienteNombre||'—')}<br><strong>Email:</strong> ${esc(p.clienteEmail||'—')}<br><strong>Teléfono:</strong> ${esc(p.clienteTelefono||'—')}</p>
+    <p style="margin-top:8px;font-size:.88rem;"><strong>Entrega:</strong> ${p.metodoEntrega==='envio'?'Envío a domicilio':'Retiro'}<br><strong>Dirección:</strong> ${esc(dirTxt)}</p>
+    ${p.notas?`<p style="margin-top:8px;font-size:.88rem;"><strong>Notas:</strong> ${esc(p.notas)}</p>`:''}
+    <div class="modal-actions">
+      ${wa?`<a class="btn" style="background:#25D366;text-decoration:none;" target="_blank" rel="noopener" href="https://wa.me/${wa}?text=${encodeURIComponent('¡Hola '+(p.clienteNombre||'')+'! Sobre tu pedido #'+p.id.slice(0,8).toUpperCase())}">Escribir por WhatsApp</a>`:''}
+      <button class="btn ghost" data-close-ov>Cerrar</button>
+    </div>
+  `);
+}
+
+function renderClientes(){
+  const q=($('cliSearch').value||'').trim().toLowerCase();
+  const list=clientes.filter(c=>!q || String(c.nombre||'').toLowerCase().includes(q) || String(c.email||'').toLowerCase().includes(q));
+  $('cliCount').textContent=`${list.length} de ${clientes.length} clientes`;
+  const body=$('cliBody');
+  if(!list.length){ body.innerHTML='<tr><td colspan="6" class="loading">Sin clientes.</td></tr>'; return; }
+  body.innerHTML=list.map(c=>{
+    const uid=c.uid||c.id;
+    const nPed=pedidos.filter(p=>p.clienteUid===uid).length;
+    const d=c.direccion||{};
+    return `<tr>
+      <td><strong>${esc(c.nombre||'—')}</strong></td>
+      <td class="hide-sm">${esc(c.email||'')}</td>
+      <td>${esc(c.telefono||'—')}</td>
+      <td class="hide-sm">${esc(d.ciudad||'—')}</td>
+      <td>${nPed}</td>
+      <td class="actions"><button class="btn ghost sm" data-cli="${esc(uid)}">Ver pedidos</button></td>
+    </tr>`;
+  }).join('');
+  body.querySelectorAll('[data-cli]').forEach(b=>b.onclick=()=>verPedidosCliente(b.dataset.cli));
+}
+
+function verPedidosCliente(uid){
+  const c=clientes.find(x=>(x.uid||x.id)===uid);
+  const suyos=pedidos.filter(p=>p.clienteUid===uid);
+  const rows=suyos.length ? suyos.map(p=>`<div style="border:1px solid #eee;border-radius:10px;padding:10px;margin-bottom:8px;font-size:.85rem;">
+      <div style="display:flex;justify-content:space-between;"><strong>#${esc(p.id.slice(0,8).toUpperCase())}</strong><span>$${(Number(p.total)||0).toLocaleString('es-AR')}</span></div>
+      <div class="hint">${fechaPed(p.creado)} · ${esc(EST_PED[p.estado]?.l||p.estado||'')}</div>
+    </div>`).join('') : '<p class="hint">Este cliente todavía no hizo pedidos.</p>';
+  const d=(c&&c.direccion)||{};
+  const dirTxt=[[d.calle,d.numero].filter(Boolean).join(' '), d.ciudad, d.provincia].filter(Boolean).join(', ') || 'Sin dirección cargada';
+  openOverlay(`
+    <h2>${esc(c?.nombre||'Cliente')}</h2>
+    <p style="font-size:.88rem;margin-bottom:4px;">${esc(c?.email||'')} · ${esc(c?.telefono||'')}</p>
+    <p class="hint" style="margin-bottom:14px;">${esc(dirTxt)}</p>
+    <p style="font-weight:800;margin-bottom:8px;">Pedidos (${suyos.length})</p>
+    ${rows}
+    <div class="modal-actions"><button class="btn ghost" data-close-ov>Cerrar</button></div>
+  `);
 }
 
 /* ============================================================
