@@ -47,7 +47,17 @@ textarea{resize:vertical;min-height:70px;}
 .topbar{background:#fff;border-bottom:1px solid var(--line);padding:12px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;position:sticky;top:0;z-index:20;}
 .topbar .brand{display:flex;align-items:center;gap:10px;font-family:'Nunito';font-weight:900;font-size:1rem;}
 .topbar .brand img{height:34px;}
-.topbar .user{display:flex;align-items:center;gap:12px;font-size:.82rem;color:var(--muted);}
+.topbar .user{display:flex;align-items:center;gap:12px;font-size:.82rem;color:var(--muted);position:relative;}
+.brand-title{color:var(--ink);}
+/* Hamburguesa del panel (oculto por defecto; se muestra en celular) */
+.admin-burger{display:none;background:none;border:1.5px solid var(--line);border-radius:9px;width:38px;height:38px;font-size:1.15rem;line-height:1;cursor:pointer;color:#444;align-items:center;justify-content:center;flex-shrink:0;}
+.admin-burger:hover{background:#f4f5f7;}
+.admin-menu{position:absolute;right:0;top:calc(100% + 8px);background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:0 12px 30px rgba(0,0,0,.16);min-width:230px;padding:6px;display:none;flex-direction:column;z-index:40;}
+.admin-menu.open{display:flex;}
+.admin-menu-email{padding:9px 12px;font-size:.76rem;color:#888;border-bottom:1px solid #f0f0f0;margin-bottom:4px;word-break:break-all;line-height:1.4;}
+.admin-menu a,.admin-menu button{display:block;padding:11px 12px;border-radius:8px;text-decoration:none;color:#444;font-weight:700;font-size:.88rem;background:none;border:none;text-align:left;width:100%;cursor:pointer;font-family:inherit;}
+.admin-menu a:hover,.admin-menu button:hover{background:#f4f5f7;}
+.admin-menu #logoutBtnMenu{color:var(--danger);}
 .tabs{display:flex;gap:6px;background:#fff;border-bottom:1px solid var(--line);padding:0 20px;position:sticky;top:59px;z-index:19;overflow-x:auto;}
 .tab-btn{background:none;border:none;padding:13px 16px;font-family:inherit;font-weight:800;font-size:.88rem;color:var(--muted);cursor:pointer;border-bottom:3px solid transparent;white-space:nowrap;}
 .tab-btn.active{color:var(--turquesa-ink);border-bottom-color:var(--turquesa);}
@@ -59,7 +69,26 @@ textarea{resize:vertical;min-height:70px;}
 .count-note{font-size:.82rem;color:var(--muted);}
 
 /* ── TABLA ── */
-.table-card{background:#fff;border:1px solid var(--line);border-radius:14px;overflow:hidden;}
+/* La tabla scrollea horizontal si no entra (cualquier orientación).
+   Las sombras laterales aparecen solo cuando hay más para deslizar. */
+.table-card{
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:14px;
+  overflow-x:auto;
+  background-image:
+    linear-gradient(to right, #fff, rgba(255,255,255,0)),
+    linear-gradient(to left, #fff, rgba(255,255,255,0)),
+    linear-gradient(to right, rgba(0,0,0,.10), rgba(0,0,0,0)),
+    linear-gradient(to left, rgba(0,0,0,.10), rgba(0,0,0,0));
+  background-position:0 0, 100% 0, 0 0, 100% 0;
+  background-size:26px 100%, 26px 100%, 14px 100%, 14px 100%;
+  background-repeat:no-repeat;
+  background-attachment:local, local, scroll, scroll;
+}
+.table-card::-webkit-scrollbar{height:7px;}
+.table-card::-webkit-scrollbar-thumb{background:#d5d5d5;border-radius:10px;}
+.table-card::-webkit-scrollbar-track{background:transparent;}
 table{width:100%;border-collapse:collapse;font-size:.85rem;}
 th,td{padding:10px 12px;text-align:left;border-bottom:1px solid #f0f0f0;vertical-align:middle;}
 th{background:#fafafa;font-weight:800;font-size:.76rem;text-transform:uppercase;letter-spacing:.4px;color:#777;position:sticky;top:0;}
@@ -99,31 +128,54 @@ td.actions{white-space:nowrap;text-align:right;}
 .variante-row input.vs{width:90px;}
 .hint{font-size:.76rem;color:var(--muted);margin-top:4px;}
 .loading{text-align:center;padding:50px;color:var(--muted);font-weight:700;}
-@media(max-width:600px){
+td.actions{white-space:nowrap;}
+
+/* ── PANTALLA ANGOSTA (vertical): ocultar columnas secundarias y
+   formularios a una columna. En horizontal hay ancho de sobra, no aplica. */
+@media (max-width:600px){
   .modal .grid2{grid-template-columns:1fr;}
   td.hide-sm,th.hide-sm{display:none;}
+}
 
-  /* Topbar: logo chico, sin texto ni email; solo "Cerrar sesión" */
-  .topbar{padding:10px 12px;gap:8px;}
-  .topbar .brand{font-size:0;gap:0;}          /* oculta el texto, deja el logo (height fija) */
+/* ── CELULAR: vertical (ancho ≤600) Y horizontal (alto ≤500 apaisado) ──
+   Nav compacto con hamburguesa + modales a pantalla casi completa. */
+@media (max-width:600px), (max-height:500px) and (orientation:landscape) {
+  /* Topbar: logo + "Panel" + hamburguesa; se ocultan email y botones sueltos */
+  .topbar{
+    padding:9px 12px;
+    padding-left:calc(12px + env(safe-area-inset-left));
+    padding-right:calc(12px + env(safe-area-inset-right));
+    gap:8px;
+  }
+  .topbar .brand{gap:8px;}
   .topbar .brand img{height:22px;}
-  .topbar .user{gap:6px;}
-  #userEmail{display:none;}
-  .topbar .user a.btn{display:none;}          /* "Ver tienda" (acción secundaria) fuera en mobile */
-  .topbar .user .btn{padding:7px 12px;font-size:.78rem;white-space:nowrap;}
-  .tabs{top:52px;padding:0 12px;}
+  .brand-title{font-size:.95rem;}
+  .user-inline{display:none;}                 /* email + Ver tienda + Cerrar sesión sueltos */
+  .admin-burger{display:flex;}
+  .admin-menu{right:0;}
 
-  /* Menos padding general */
-  .wrap{padding:16px 12px 70px;}
-
-  /* Tablas: scroll horizontal en vez de recortar la columna de acciones.
-     Las anchas (productos/pedidos) scrollean solas; la de stock entra y no scrollea. */
-  .table-card{overflow-x:auto;}
-  td.actions{white-space:nowrap;}
+  .tabs{
+    top:50px;
+    padding-left:calc(12px + env(safe-area-inset-left));
+    padding-right:calc(12px + env(safe-area-inset-right));
+  }
+  .tab-btn{padding:11px 14px;font-size:.85rem;}
+  .wrap{
+    padding:14px 12px 70px;
+    padding-left:calc(12px + env(safe-area-inset-left));
+    padding-right:calc(12px + env(safe-area-inset-right));
+  }
 
   /* Modales a pantalla casi completa */
   .overlay{padding:10px;align-items:flex-start;}
   .modal{padding:18px;border-radius:14px;}
   .modal-actions{flex-direction:column-reverse;}
   .modal-actions .btn{width:100%;}
+}
+
+/* En horizontal de celu, nav y pestañas aún más finos (poca altura) */
+@media (max-height:500px) and (orientation:landscape) {
+  .topbar{padding-top:6px;padding-bottom:6px;}
+  .tabs{top:44px;}
+  .tab-btn{padding:9px 14px;}
 }

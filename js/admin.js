@@ -124,11 +124,31 @@ function initPanel(){
     if(!await esAdmin(user.uid)){ alert('Tu cuenta no tiene permisos de administradora.'); await signOut(auth); location.href='index.html'; return; }
     // Autorizada
     $('userEmail').textContent=user.email;
+    $('userEmailMenu').textContent='Sesión: '+user.email;
     $('panelRoot').style.display='block';
-    wireTabs(); wireProductForm(); wireConfig();
-    $('logoutBtn').onclick=()=>signOut(auth).then(()=>location.href='index.html');
+    wireTabs(); wireProductForm(); wireConfig(); wireTopbar();
+    const cerrar=()=>signOut(auth).then(()=>location.href='index.html');
+    $('logoutBtn').onclick=cerrar;
+    $('logoutBtnMenu').onclick=cerrar;
     await cargarProductos();
     await cargarConfig();
+  });
+}
+
+/* Menú hamburguesa del topbar (solo se ve en celular por CSS) */
+function wireTopbar(){
+  const burger=$('adminBurger'), menu=$('adminMenu');
+  if(!burger||!menu) return;
+  burger.onclick=e=>{
+    e.stopPropagation();
+    const open=menu.classList.toggle('open');
+    burger.setAttribute('aria-expanded', open?'true':'false');
+  };
+  document.addEventListener('click', e=>{
+    if(!menu.contains(e.target) && e.target!==burger){ menu.classList.remove('open'); burger.setAttribute('aria-expanded','false'); }
+  });
+  document.addEventListener('keydown', e=>{
+    if(e.key==='Escape'){ menu.classList.remove('open'); burger.setAttribute('aria-expanded','false'); }
   });
 }
 

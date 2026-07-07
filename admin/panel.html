@@ -14,11 +14,18 @@
 <body>
 <div id="panelRoot" style="display:none;">
   <header class="topbar">
-    <div class="brand"><img src="../assets/logo.svg" alt="">Panel Simo & Gena</div>
+    <div class="brand"><img src="../assets/logo.svg" alt="Simo & Gena"><span class="brand-title">Panel</span></div>
     <div class="user">
-      <span id="userEmail"></span>
-      <a href="../index.html" class="btn ghost sm" target="_blank">Ver tienda ↗</a>
-      <button class="btn secondary sm" id="logoutBtn">Cerrar sesión</button>
+      <span id="userEmail" class="user-inline"></span>
+      <a href="../index.html" class="btn ghost sm user-inline" target="_blank">Ver tienda ↗</a>
+      <button class="btn secondary sm user-inline" id="logoutBtn">Cerrar sesión</button>
+      <!-- Menú compacto (solo celular) -->
+      <button class="admin-burger" id="adminBurger" aria-label="Menú" aria-expanded="false" aria-controls="adminMenu">☰</button>
+      <div class="admin-menu" id="adminMenu">
+        <div class="admin-menu-email" id="userEmailMenu"></div>
+        <a href="../index.html" target="_blank" rel="noopener">Ver tienda ↗</a>
+        <button id="logoutBtnMenu">Cerrar sesión</button>
+      </div>
     </div>
   </header>
 
