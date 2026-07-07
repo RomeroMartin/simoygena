@@ -110,7 +110,8 @@ h1, h2, h3, h4 { font-family: 'Nunito', sans-serif; }
 .cart-overlay.open { opacity: 1; pointer-events: all; }
 .cart-drawer {
   position: fixed; top: 0; right: 0;
-  width: min(380px, 100vw); height: 100vh;
+  width: min(380px, 100vw);
+  height: 100vh; height: 100dvh;   /* 100dvh = alto visible real en iOS (no tapa el footer) */
   background: white; z-index: 201;
   transform: translateX(100%);
   transition: transform .35s cubic-bezier(.4,0,.2,1);
@@ -135,7 +136,7 @@ h1, h2, h3, h4 { font-family: 'Nunito', sans-serif; }
 .qty-btn { width: 24px; height: 24px; border-radius: 50%; border: 1.5px solid #e0e0e0; background: white; cursor: pointer; font-size: .85rem; font-weight: 800; color: #555; display: flex; align-items: center; justify-content: center; transition: all .15s; }
 .qty-btn:hover { border-color: var(--turquesa); color: var(--turquesa); }
 .qty-num { font-weight: 800; font-size: .86rem; min-width: 16px; text-align: center; }
-.cart-footer { padding: 18px 22px; border-top: 2px solid var(--mint); background: #FDFCF8; }
+.cart-footer { padding: 18px 22px; padding-bottom: calc(18px + env(safe-area-inset-bottom)); border-top: 2px solid var(--mint); background: #FDFCF8; }
 .cart-total { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
 .cart-total-label { font-weight: 700; color: #555; font-size: .86rem; }
 .cart-total-price { font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 1.3rem; color: #2d2d2d; }
@@ -149,7 +150,7 @@ h1, h2, h3, h4 { font-family: 'Nunito', sans-serif; }
 .btn-whatsapp img { width: 20px; height: 20px; object-fit: contain; filter: brightness(0) invert(1); }
 
 /* ── FLOAT BAR ── */
-.float-bar { position: fixed; bottom: 22px; right: 22px; z-index: 150; display: flex; flex-direction: column; gap: 10px; align-items: flex-end; }
+.float-bar { position: fixed; bottom: 22px; bottom: calc(22px + env(safe-area-inset-bottom)); right: 22px; z-index: 150; display: flex; flex-direction: column; gap: 10px; align-items: flex-end; }
 .float-btn {
   display: flex; align-items: center; gap: 10px;
   background: white; border-radius: 50px; padding: 8px 16px 8px 8px;
@@ -237,7 +238,7 @@ footer { background: #781000; color: #aaa; padding: 44px 24px 24px; }
 /* ── MODAL DE CHECKOUT (confirmar pedido) ── */
 .co-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.5); z-index: 250; display: none; align-items: center; justify-content: center; padding: 20px; }
 .co-overlay.open { display: flex; }
-.co-modal { background: #fff; border-radius: 20px; width: min(460px, 100%); max-height: 92vh; overflow-y: auto; box-shadow: 0 24px 64px rgba(0,0,0,.25); }
+.co-modal { background: #fff; border-radius: 20px; width: min(460px, 100%); max-height: 92vh; max-height: 92dvh; overflow-y: auto; box-shadow: 0 24px 64px rgba(0,0,0,.25); }
 .co-head { display: flex; align-items: center; justify-content: space-between; padding: 18px 22px; border-bottom: 1px solid #f0f0f0; position: sticky; top: 0; background: #fff; }
 .co-head h3 { font-family: 'Nunito', sans-serif; font-size: 1.1rem; font-weight: 900; color: #2d2d2d; }
 .co-close { background: none; border: none; font-size: 1.05rem; color: #999; cursor: pointer; width: 30px; height: 30px; border-radius: 50%; }
@@ -254,7 +255,7 @@ footer { background: #781000; color: #aaa; padding: 44px 24px 24px; }
 .co-entrega label { display: flex; align-items: center; gap: 7px; margin: 0; text-transform: none; letter-spacing: 0; font-weight: 700; font-size: .86rem; color: #444; border: 1.5px solid #e8e8e8; border-radius: 12px; padding: 10px 14px; cursor: pointer; flex: 1; }
 .co-entrega input { width: auto; }
 .co-grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-.co-foot { padding: 16px 22px 20px; border-top: 1px solid #f0f0f0; }
+.co-foot { padding: 16px 22px; padding-bottom: calc(20px + env(safe-area-inset-bottom)); border-top: 1px solid #f0f0f0; }
 .co-msg { font-size: .82rem; font-weight: 700; padding: 9px 12px; border-radius: 9px; margin-top: 12px; display: none; }
 .co-msg.show { display: block; }
 .co-msg.error { background: #fff0f0; color: #c0392b; border: 1.5px solid #ffd0d0; }

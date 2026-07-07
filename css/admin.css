@@ -102,4 +102,28 @@ td.actions{white-space:nowrap;text-align:right;}
 @media(max-width:600px){
   .modal .grid2{grid-template-columns:1fr;}
   td.hide-sm,th.hide-sm{display:none;}
+
+  /* Topbar: logo chico, sin texto ni email; solo "Cerrar sesión" */
+  .topbar{padding:10px 12px;gap:8px;}
+  .topbar .brand{font-size:0;gap:0;}          /* oculta el texto, deja el logo (height fija) */
+  .topbar .brand img{height:22px;}
+  .topbar .user{gap:6px;}
+  #userEmail{display:none;}
+  .topbar .user a.btn{display:none;}          /* "Ver tienda" (acción secundaria) fuera en mobile */
+  .topbar .user .btn{padding:7px 12px;font-size:.78rem;white-space:nowrap;}
+  .tabs{top:52px;padding:0 12px;}
+
+  /* Menos padding general */
+  .wrap{padding:16px 12px 70px;}
+
+  /* Tablas: scroll horizontal en vez de recortar la columna de acciones.
+     Las anchas (productos/pedidos) scrollean solas; la de stock entra y no scrollea. */
+  .table-card{overflow-x:auto;}
+  td.actions{white-space:nowrap;}
+
+  /* Modales a pantalla casi completa */
+  .overlay{padding:10px;align-items:flex-start;}
+  .modal{padding:18px;border-radius:14px;}
+  .modal-actions{flex-direction:column-reverse;}
+  .modal-actions .btn{width:100%;}
 }
